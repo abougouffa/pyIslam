@@ -46,7 +46,7 @@ else:
 	print '1 = Shafii\n2 = Hanafi'
 	asr_relig = int(raw_input('Enter your choose (1 or 2): '))
 
-pt = prayertimes(longitude, latitude, timezone, fajr_isha_method, asr_relig, date.today(), False)
+pt = prayertimes(float(longitude), latitude, timezone, fajr_isha_method, asr_relig, date.today(), False)
 
 h = today(1)
 
