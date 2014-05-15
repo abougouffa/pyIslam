@@ -38,11 +38,11 @@ def dacos(deg): return acos((deg * pi) / 180)
 
 
 # Hijri date calculation methods
-def hijri_to_julian_day(dat):
+def hijriToJulianDay(dat):
     return int((11 * dat.year + 3) / 30) + int(354 * dat.year) + int(30 * dat.month) - int((dat.month - 1) / 2) + dat.day + 1948440 - 385
 
 
-def gregorian_to_julian_day(dat): # Julian Day
+def gregorianToJulianDay(dat): # Julian Day
     is_julian_org = False
     is_gregorian_org = False
     day = dat.day
@@ -82,7 +82,7 @@ def gregorian_to_julian_day(dat): # Julian Day
     return int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + day + b - 1524.5 # Julian Day
 
 
-def get_hijri_date(julian_day, correction_val = 0):
+def getHijriDate(julian_day, correction_val = 0):
     l = int(julian_day + correction_val) - 1937808
     n = int((l - 1) / 10631)
     l = l - 10631 * n + 354

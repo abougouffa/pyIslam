@@ -26,10 +26,10 @@ from baselib import *
 
 
 def today(correction_val = 0):
-	return get_hijri_date(gregorian_to_julian_day(date.today()), correction_val)
+	return getHijriDate(gregorianToJulianDay(date.today()), correction_val)
 
 
-class hijridate:
+class HijriDate:
     year = 0
     month = 0
     day = 0

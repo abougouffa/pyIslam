@@ -14,7 +14,7 @@ abdelhak.alg@gmail.com [or] abdelhak.alg@hotmail.com
 -------------------------------------'''
 fi = (  'University of Islamic Sciences, Karachi',
 		'World Islamic League',
-		'Egiptian General Organization of Surveying',
+		'Egyptian General Organization of Surveying',
 		'Um Al-Qura Committee',
 		'Islamic Society of North America')
 
@@ -46,11 +46,11 @@ else:
 	print '1 = Shafii\n2 = Hanafi'
 	asr_relig = int(raw_input('Enter your choose (1 or 2): '))
 
-pt = prayertimes(float(longitude), latitude, timezone, fajr_isha_method, asr_relig, date.today(), False)
+pt = Prayer(longitude, latitude, timezone, fajr_isha_method, asr_relig, date.today(), False)
 
 h = today(1)
 
-hijri = hijridate(h[0], h[1], h[2])
+hijri = HijriDate(h[0], h[1], h[2])
 
 print 'Longitude:\n\t', longitude
 print 'Latitude:\n\t', latitude
@@ -62,11 +62,11 @@ print 'Fajr and Isha calculation method:\n\t', fi[fajr_isha_method - 1]
 print 'Asr religion:\n\t', ar[asr_relig - 1]
 
 print '\nPrayer times for: ' + hijri.format(1)
-print 'Fajr:    ' + str(val_to_time(pt.fajr_time()))
-print 'Sherook: ' + str(val_to_time(pt.sherook_time()))
-print 'Duhr:    ' + str(val_to_time(pt.duhr_time()))
-print 'Asr:     ' + str(val_to_time(pt.asr_time()))
-print 'Maghreb: ' + str(val_to_time(pt.maghreb_time()))
-print 'Isha:    ' + str(val_to_time(pt.isha_time()))
+print 'Fajr:    ' + str(valToTime(pt.fajrTime()))
+print 'Sherook: ' + str(valToTime(pt.sherookTime()))
+print 'Duhr:    ' + str(valToTime(pt.duhrTime()))
+print 'Asr:     ' + str(valToTime(pt.asrTime()))
+print 'Maghreb: ' + str(valToTime(pt.maghrebTime()))
+print 'Isha:    ' + str(valToTime(pt.ishaTime()))
 
-print 'Qubla direction from the north: ' + str(pt.qubla_direction()) + ' degree.'
+print 'Qubla direction from the north: ' + str(pt.qublaDirection()) + ' degree.'
