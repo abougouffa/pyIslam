@@ -48,7 +48,7 @@ else:
 
 pt = Prayer(longitude, latitude, timezone, fajr_isha_method, asr_relig, date.today(), False)
 
-h = today(1)
+h = HijriDate.today(1)
 
 hijri = HijriDate(h[0], h[1], h[2])
 
@@ -61,7 +61,7 @@ print 'Timezone:\n\t', tz(timezone)
 print 'Fajr and Isha calculation method:\n\t', fi[fajr_isha_method - 1]
 print 'Asr religion:\n\t', ar[asr_relig - 1]
 
-print '\nPrayer times for: ' + hijri.format(1)
+print '\nPrayer times for: ' + hijri.format(0)
 print 'Fajr:    ' + str(valToTime(pt.fajrTime()))
 print 'Sherook: ' + str(valToTime(pt.sherookTime()))
 print 'Duhr:    ' + str(valToTime(pt.duhrTime()))

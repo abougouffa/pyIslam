@@ -24,11 +24,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 from datetime import date, time
 from baselib import *
 
-
-def today(correction_val = 0):
-	return getHijriDate(gregorianToJulianDay(date.today()), correction_val)
-
-
 class HijriDate:
     year = 0
     month = 0
@@ -48,6 +43,10 @@ class HijriDate:
             elif (day > 30): raise Exception('Day > 30')
             else: self.day = day
         else: raise Exception('The day and month and year values must be integer')
+    
+    @staticmethod
+    def today(correction_val = 0):
+		return getHijriDate(gregorianToJulianDay(date.today()), correction_val)
 
 
     def format(self, lang = 0):

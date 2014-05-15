@@ -93,4 +93,36 @@ def getHijriDate(julian_day, correction_val = 0):
     year = int(30 * n + j - 30)
     return (year, month, day)
 
-    
+
+def getGregorianDate(jd):
+
+	z = int(jd)
+	f = jd - z;
+	
+	if z < 2299161:
+		a = z
+	else:
+		alpha = int((z - 1867216.25) / 36524.25)
+		a = z + 1 + alpha - int((alpha / 4))
+	
+	b = a + 1524
+	c = int((b - 122.1) / 365.25)
+	d = int(365.25 * c)
+	e = int((b - d) / 30.6001)
+	
+	# Calculate the day
+	day = b - d - int(30.6001 * e) + f
+	
+	# Calculate the month
+	if e < 14:
+		month = e - 1
+	elif e == 14 or e == 15:
+		month = e - 13
+	
+	# Calculate the year
+	if month > 2:
+		year = c - 4716
+	elif month == 1 or month == 2:
+		year = c - 4715
+	
+	return (year, month, day)
