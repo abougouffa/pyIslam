@@ -37,7 +37,7 @@ def toSixty(deg): # Convert an angle from degree to sixty
 
 
 def valToTime(val, summer_time = False): # Convert a decimal value (in hours) to time object
-	if summer_time == True: st = 1
+	if summer_time: st = 1
 	else: st = 0
 	hour = val
 	minute = (hour - int(hour)) * 60
@@ -75,7 +75,7 @@ class Prayer: # Prayer times and qiblah calculating class
         self.longitude_diference = (self.middle_longitude - self.longitude) / 15
         
 
-        if (enable_summer_time == True):
+        if enable_summer_time:
             self._summer_time = 1
         else:
             self._summer_time = 0
