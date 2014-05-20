@@ -10,7 +10,7 @@ from datetime import date, time
 
 print '''Assalat Imade Eddin 0.1.1 - an islamic prayer times calculator
 Written by (Al-Fakir Ila Allah): Abdelhak Mohammed Bougouffa
-abdelhak.alg@gmail.com [or] abdelhak.alg@hotmail.com
+abdelhak.alg@gmail.com [or] abdelhak@cryptolab.net
 -------------------------------------'''
 fi = (  'University of Islamic Sciences, Karachi',
 		'World Islamic League',
