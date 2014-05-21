@@ -61,7 +61,7 @@ print 'Timezone:\n\t', tz(timezone)
 print 'Fajr and Isha calculation method:\n\t', fi[fajr_isha_method - 1]
 print 'Asr religion:\n\t', ar[asr_relig - 1]
 
-print '\nPrayer times for: ' + hijri.format(0)
+print '\nPrayer times for: ' + hijri.format(2)
 print 'Fajr:    ' + str(valToTime(pt.fajrTime()))
 print 'Sherook: ' + str(valToTime(pt.sherookTime()))
 print 'Duhr:    ' + str(valToTime(pt.duhrTime()))

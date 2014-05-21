@@ -39,10 +39,10 @@ def toSixty(deg): # Convert an angle from degree to sixty
 def valToTime(val, summer_time = False): # Convert a decimal value (in hours) to time object
 	if summer_time: st = 1
 	else: st = 0
-	hour = val
-	minute = (hour - int(hour)) * 60
-	second = (minute - int(minute)) * 60
-	return time((int(hour) + st), int(minute), int(second))
+	hours = val
+	minutes = (hours - int(hours)) * 60
+	seconds = (minutes - int(minutes)) * 60
+	return time((int(hours) + st), int(minutes), int(seconds))
 
 
 class Prayer: # Prayer times and qiblah calculating class
@@ -57,22 +57,22 @@ class Prayer: # Prayer times and qiblah calculating class
     ishaZenith = 108
     date = 0
     middle_longitude = 0
-    longitude_diference = 0
+    longitude_difference = 0
     other_infos = list()
 
 
-    def __init__(self, longitude, latitude, timezone, fajr_isha_method, asr_relig, dat, enable_summer_time): # Constructor
+    def __init__(self, longitude, latitude, timezone, fajr_isha_method, asr_relig, dat, enable_summer_time=False): # Constructor
         self.longitude = longitude
         self.latitude = latitude
         self.timezone = timezone
 
-        if (asr_relig == 1 or asr_relig == 2):
+        if asr_relig == 1 or asr_relig == 2:
             self.asr_religion = asr_relig # 1 = Shafii (Default), 2 = Hanafi
         else: self.asr_religion = 1
 
         self.date = dat
         self.middle_longitude = self.timezone * 15
-        self.longitude_diference = (self.middle_longitude - self.longitude) / 15
+        self.longitude_difference = (self.middle_longitude - self.longitude) / 15
         
 
         if enable_summer_time:
@@ -80,19 +80,19 @@ class Prayer: # Prayer times and qiblah calculating class
         else:
             self._summer_time = 0
 
-        if (fajr_isha_method == 1):   # 1 = University of Islamic Sciences, Karachi
+        if fajr_isha_method == 1:   # 1 = University of Islamic Sciences, Karachi
             self.fajrZenith = 108.0     # 90 + 18.0
             self.ishaZenith = 108.0     # 90 + 18.0
-        elif (fajr_isha_method == 2): # 2 = World Islamic League
+        elif fajr_isha_method == 2: # 2 = World Islamic League
             self.fajrZenith = 108.0     # 90 + 18.0
             self.ishaZenith = 107.0     # 90 + 17.0
-        elif (fajr_isha_method == 3): # 3 = Egiptian General Organization of Surveying
+        elif fajr_isha_method == 3: # 3 = Egiptian General Organization of Surveying
             self.fajrZenith = 109.5     # 90 + 19.5
             self.ishaZenith = 107.5     # 90 + 17.5
-        elif (fajr_isha_method == 4): # 4 = Um Al-Qura Committee
+        elif fajr_isha_method == 4: # 4 = Um Al-Qura Committee
             self.fajrZenith = 108.5     # 90 + 18.5
             self.ishaZenith = 0.0       # 90 minutes after the maghreb time (or 120 minutes in Ramadan only)
-        elif (fajr_isha_method == 5): # 5 = Islamic Society of North America
+        elif fajr_isha_method == 5: # 5 = Islamic Society of North America
             self.fajrZenith = 105.0     # 90 + 15.0
             self.ishaZenith = 105.0     # 90 + 15.0
 
@@ -135,10 +135,11 @@ class Prayer: # Prayer times and qiblah calculating class
         g = 357.528 + 0.9856003 * n # Mean Anomaly (in degree)
         self.other_infos.append(g)
 
-        while (l < 0): l = l + 360
-        while (l > 360): l = l - 360
-        while (g < 0): g = g + 360
-        while (g > 360): g = g - 360
+		# Let the l and g angles between 0 and 360 degree
+        while l < 0:	l = l + 360
+        while l > 360:	l = l - 360
+        while g < 0:	g = g + 360
+        while g > 360:	g = g - 360
 
         lamda = l + 1.915 * dsin(g) + 0.020 * dsin(2 * g) # Ecliptic longitude (in degree)
         self.other_infos.append(lamda)
@@ -159,11 +160,10 @@ class Prayer: # Prayer times and qiblah calculating class
 
 
     def duhrTime(self): # Duhr Time
-        ld = self.longitude_diference
+        ld = self.longitude_difference
         time_eq = self.equationOfTime()
         duhr_t = 12 + ld + time_eq / 60
         return duhr_t
-        return h
 
 
     def asrTime(self): # Asr Time
@@ -190,17 +190,17 @@ class Prayer: # Prayer times and qiblah calculating class
     def prayerTime(self, zenith): # Get Times for "Fajr, Sherook, Asr, Maghreb, Isha"
         delta = self.sunDeclination()
         s = (dcos(zenith) - dsin(self.latitude) * dsin(delta)) / (dcos(self.latitude) * dcos(delta))
-        return ((180 / pi * (atan(-s / sqrt(-s * s + 1)) + pi / 2)) / 15)
+        return (180 / pi * (atan(-s / sqrt(-s * s + 1)) + pi / 2)) / 15
 
 
     def qublaDirection(self): # Get the direction of qubla (El-Masjid al-haram - Makkah) - in degree
-        makkah_latitude = 21.4233 #21.433332
-        makkah_longitude = 39.8233 #39.766666
+        makkah_latitude = 21.42249		# Longitude and latitude taken from maps.google.com
+        makkah_longitude = 39.826174
         lamda = makkah_longitude - self.longitude
         numerator = dcos(makkah_latitude) * dsin(lamda)
         denominator = dsin(makkah_latitude) * dcos(self.latitude) - dcos(makkah_latitude) * dsin(self.latitude) * dcos(lamda)
         qubla_dir = (180 / pi) * atan(numerator / denominator)
-        if (numerator > 0 and denominator < 0): qubla_dir = 180 + qubla_dir
-        if (numerator < 0 and denominator < 0): qubla_dir = 180 + qubla_dir
-        if (numerator < 0 and denominator > 0): qubla_dir = 360 + qubla_dir
+        if numerator > 0 and denominator < 0: qubla_dir = 180 + qubla_dir
+        if numerator < 0 and denominator < 0: qubla_dir = 180 + qubla_dir
+        if numerator < 0 and denominator > 0: qubla_dir = 360 + qubla_dir
         return qubla_dir
