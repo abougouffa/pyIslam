@@ -25,7 +25,6 @@ from datetime import date, time
 
 # Trigonometric functions takes values in degree
 def dcos(deg): return cos((deg * pi) / 180)
-
 def dsin(deg): return sin((deg * pi) / 180)
 
 # Hijri date calculation methods
