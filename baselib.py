@@ -28,15 +28,6 @@ def dcos(deg): return cos((deg * pi) / 180)
 
 def dsin(deg): return sin((deg * pi) / 180)
 
-def dtan(deg): return tan((deg * pi) / 180)
-
-def datan(deg): return atan((deg * pi) / 180)
-
-def dasin(deg): return asin((deg * pi) / 180)
-
-def dacos(deg): return acos((deg * pi) / 180)
-
-
 # Hijri date calculation methods
 def hijriToJulianDay(dat):
     return int((11 * dat.year + 3) / 30) + int(354 * dat.year) + int(30 * dat.month) - int((dat.month - 1) / 2) + dat.day + 1948440 - 385
