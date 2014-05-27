@@ -1,7 +1,7 @@
 islamic-lib
 ===========
 
-islamic-lib is a python library to calculate prayer times and convert between gregorian and hijri
+islamic-lib is a python library to calculate prayer times and convert between gregorian and hijri.
 Now, the library can does:
 
 	*Prayer times calculation
@@ -9,5 +9,5 @@ Now, the library can does:
 	*Qibla direction
 
 TODO:
-	+Zakat calculation routines
-	+Reorganize the library
+	*Zakat calculation routines
+	*Reorganize the library
