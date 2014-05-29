@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from prayertimes import *
-from hijriorganizer import *
+from pyIslam.praytimes import *
+from pyIslam.hijri import *
 from datetime import date, time
 
 # Latitude = 36.716667

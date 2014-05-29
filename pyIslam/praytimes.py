@@ -21,8 +21,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 from math import *
 from datetime import date, time
-from baselib import *
-from hijriorganizer import *
+from pyIslam.hijri import *
+from pyIslam.baselib import *
 
 
 def toSixty(deg): # Convert an angle from degree to sixty
