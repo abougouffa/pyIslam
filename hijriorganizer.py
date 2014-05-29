@@ -46,11 +46,11 @@ class HijriDate:
     
     @staticmethod
     def today(correction_val = 0):
-		return getHijriDate(gregorianToJulianDay(date.today()), correction_val)
+        return getHijriDate(gregorianToJulianDay(date.today()), correction_val)
 
 
     def format(self, lang = 0):
-	'''lang: 1 = Arabic, 2: English, without = Numeric'''
+        '''lang: 1 = Arabic, 2: English, without = Numeric'''
 
         if (lang == 0): # Numeric Format
             if (self.day > 9): str_day = str(self.day)

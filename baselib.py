@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 '''
@@ -20,8 +20,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 '''
 
-from math import *
-from datetime import date, time
+from math import cos, sin, pi
+from datetime import date
 
 # Trigonometric functions takes values in degree
 def dcos(deg): return cos((deg * pi) / 180)
