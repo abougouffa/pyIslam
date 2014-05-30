@@ -35,7 +35,7 @@ else:
 
 	print('\n4. Choose the Fajr and Isha calculation method:\n-------------------------------------')
 	for j in range(0,5):
-		print('%d = %s\n' %(j,fi[j]))
+		print('%d = %s' %(j,fi[j]))
 
 	fajr_isha_method = int(input('Enter your choose (from 1 to 5): '))
 
