@@ -43,7 +43,7 @@ else:
 	print('1 = Shafii\n2 = Hanafi')
 	asr_relig = int(input('Enter your choose (1 or 2): '))
 
-pt = Prayer(float(longitude), latitude, timezone, fajr_isha_method, asr_relig, date.today(), False)
+pt = Prayer(PrayConf(float(longitude), latitude, timezone, fajr_isha_method, asr_relig, False), date.today())
 
 h = HijriDate.today(1)
 
@@ -56,7 +56,7 @@ def tz(t):
 	else: return 'GMT+' + str(t)
 print('Timezone:\n\t', tz(timezone))
 print('Fajr and Isha calculation method:\n\t', fi[fajr_isha_method - 1])
-print('Asr religion:\n\t', ar[asr_relig - 1])
+print('Asr madhab:\n\t', ar[asr_relig - 1])
 
 print('\nPrayer times for: ' + hijri.format(2))
 print('Fajr:    ' + str(valToTime(pt.fajrTime())))
