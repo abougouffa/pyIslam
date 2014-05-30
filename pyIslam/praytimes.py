@@ -1,24 +1,5 @@
 # -*- coding: utf-8 -*-
 
-'''
-Prayer Times is a free islamic prayer times calculator
-Copyright © 2010 Abdelhak Mohammed Bougouffa (abdelhak@cryptolab.net)
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-'''
-
 from math import *
 from datetime import date, time
 from pyIslam.hijri import *
@@ -38,12 +19,9 @@ class PrayConf:
 
         self.middleLongitude = self.timezone * 15
         self.longitudeDifference = (self.middleLongitude - self.longitude) / 15
-        
 
-        if enable_summer_time:
-            self.summerTime = 1
-        else:
-            self.summerTime = 0
+        if enable_summer_time: self.summerTime = 1
+        else: self.summerTime = 0
 
         if zenith_ref == 1:   # 1 = University of Islamic Sciences, Karachi
             self.fajrZenith = 108.0     # 90 + 18.0
@@ -134,16 +112,3 @@ class Prayer: # Prayer times and qiblah calculating class
         delta = self.__sunDeclination()
         s = (dcos(zenith) - dsin(self.__conf.latitude) * dsin(delta)) / (dcos(self.__conf.latitude) * dcos(delta))
         return (180 / pi * (atan(-s / sqrt(-s * s + 1)) + pi / 2)) / 15
-
-
-    def qublaDirection(self): # Get the direction of qubla (El-Masjid al-haram - Makkah) - in degree
-        MAKKAH_LATI = 21.42249		# Longitude and latitude taken from maps.google.com
-        MAKKAH_LONG = 39.826174
-        lamda = MAKKAH_LONG - self.__conf.longitude
-        numerator = dcos(MAKKAH_LATI) * dsin(lamda)
-        denominator = dsin(MAKKAH_LATI) * dcos(self.__conf.latitude) - dcos(MAKKAH_LATI) * dsin(self.__conf.latitude) * dcos(lamda)
-        qubla_dir = (180 / pi) * atan(numerator / denominator)
-        if numerator > 0 and denominator < 0: qubla_dir = 180 + qubla_dir
-        if numerator < 0 and denominator < 0: qubla_dir = 180 + qubla_dir
-        if numerator < 0 and denominator > 0: qubla_dir = 360 + qubla_dir
-        return qubla_dir

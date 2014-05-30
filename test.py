@@ -43,7 +43,8 @@ else:
 	print('1 = Shafii\n2 = Hanafi')
 	asr_relig = int(input('Enter your choose (1 or 2): '))
 
-pt = Prayer(PrayConf(float(longitude), latitude, timezone, fajr_isha_method, asr_relig, False), date.today())
+pconf=PrayConf(float(longitude), latitude, timezone, fajr_isha_method, asr_relig, False)
+pt = Prayer(pconf, date.today())
 
 h = HijriDate.today(1)
 
@@ -66,4 +67,4 @@ print('Asr:     ' + str(valToTime(pt.asrTime())))
 print('Maghreb: ' + str(valToTime(pt.maghrebTime())))
 print('Isha:    ' + str(valToTime(pt.ishaTime())))
 
-print('Qubla direction from the north: ' + str(pt.qublaDirection()) + ' degree.')
+print('Qubla direction from the north: ' + str(Qiblah(pconf).direction()) + ' degree.')
