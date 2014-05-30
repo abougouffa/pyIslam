@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 '''
 
 from math import cos, sin, pi
-from datetime import date
+from datetime import date, time
 
 # Trigonometric functions takes values in degree
 def dcos(deg): return cos((deg * pi) / 180)
@@ -84,7 +84,6 @@ def getHijriDate(julian_day, correction_val = 0):
 
 
 def getGregorianDate(jd):
-
 	z = int(jd)
 	f = jd - z;
 	
@@ -115,3 +114,21 @@ def getGregorianDate(jd):
 		year = c - 4715
 	
 	return (year, month, day)
+
+def toSixty(deg): # Convert an angle from degree to sixty
+	six = str(int(deg)) + 'degree'
+	deg = (deg - int(deg)) * 60
+	six = six + " " + str(int(deg)) + "'"
+	deg = (deg - int(deg)) * 60
+	six = six + " " + str(int(deg)) + "''"
+	deg = (deg - int(deg)) * 60
+	return six
+
+
+def valToTime(val, summer_time = False): # Convert a decimal value (in hours) to time object
+	if summer_time: st = 1
+	else: st = 0
+	hours = val
+	minutes = (hours - int(hours)) * 60
+	seconds = (minutes - int(minutes)) * 60
+	return time((int(hours) + st), int(minutes), int(seconds))
