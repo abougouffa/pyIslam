@@ -140,9 +140,9 @@ class Prayer: # Prayer times and qiblah calculating class
         '''Get the Ishaa time'''
         if (self.__conf.ishaaZenith == None): # ishaaZenith==None <=> method == Umm al-Qura University, Makkah
             if HijriDate.getHijri(self.__date, self.__correction_val).month == 9:
-                ishaa_t = self.maghreb_time() + 2.0 # 2.0 hours = 120 minutes
+                ishaa_t = self.__dohrTime() + self.__prayerTime(self.__conf.maghrebZenith) + 2.0 # maghreb time + 2.0 hours
             else:
-                ishaa_t = self.maghreb_time() + 1.5 # 1.5 hours = 90 minutes
+                ishaa_t = self.__dohrTime() + self.__prayerTime(self.__conf.maghrebZenith) + 1.5 # maghreb time + 1.5 hours
         else:
             ishaa_t = self.__prayerTime(self.__conf.ishaaZenith)
             ishaa_t = self.__dohrTime() + ishaa_t
