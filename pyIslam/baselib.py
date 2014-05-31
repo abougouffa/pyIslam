@@ -97,7 +97,7 @@ def getGregorianDate(jd):
 	return (year, month, day)
 
 def toSixty(deg): # Convert an angle from degree to sixty
-	six = str(int(deg)) + 'degree'
+	six = str(int(deg)) + '°'
 	deg = (deg - int(deg)) * 60
 	six = six + " " + str(int(deg)) + "'"
 	deg = (deg - int(deg)) * 60

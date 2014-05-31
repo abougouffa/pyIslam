@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from pyIslam.baselib import *
-from pyIslam.praytimes import PrayConf
+from pyIslam.praytimes import PrayerConf
+from math import atan
 
 class Qiblah():
     def __init__(self, conf):
@@ -13,7 +14,7 @@ class Qiblah():
         lamda = MAKKAH_LONG - self.__conf.longitude
         nomin = dcos(MAKKAH_LATI) * dsin(lamda)
         denom = dsin(MAKKAH_LATI) * dcos(self.__conf.latitude) - dcos(MAKKAH_LATI) * dsin(self.__conf.latitude) * dcos(lamda)
-        qubla_dir = (180 / pi) * atan(nomin / denom)
+        qiblah_dir = (180 / pi) * atan(nomin / denom)
         if nomin > 0 and denom < 0: qiblah_dir = 180 + qiblah_dir
         if nomin < 0 and denom < 0: qiblah_dir = 180 + qiblah_dir
         if nomin < 0 and denom > 0: qiblah_dir = 360 + qiblah_dir

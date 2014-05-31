@@ -5,8 +5,23 @@ from datetime import date, time
 from pyIslam.hijri import *
 from pyIslam.baselib import *
 
-class PrayConf:
-    def __init__(self, longitude, latitude, timezone, zenith_ref=3, asr_madhab=1, enable_summer_time=False): # Constructor
+class PrayerConf:
+    def __init__(self, longitude, latitude, timezone, zenith_ref=3, asr_madhab=1, enable_summer_time=False):
+        '''Initialize the PrayerConf object
+        @param longitude: geographical longitude of the given location
+        @param latitude: geographical latitude of the given location
+        @param timezone: the time zone GMT(+/-X)
+        @param zenith_ref: integer value for the Fajr and Ishaa zenith angle reference
+        1 = University of Islamic Sciences, Karachi
+        2 = Muslim World League
+        3 = Egyptian General Authority of Survey (default)
+        4 = Umm al-Qura University, Makkah
+        5 = Islamic Society of North America
+        @param asr_madhab: integer value
+        1 = Shafii (default)
+        2 = Hanafi
+        @param: enable_summer_time: True if summer time is used in the place, False (default) if not'''
+
         self.longitude = longitude
         self.latitude = latitude
         self.timezone = timezone
@@ -25,19 +40,19 @@ class PrayConf:
 
         if zenith_ref == 1:   # 1 = University of Islamic Sciences, Karachi
             self.fajrZenith = 108.0     # 90 + 18.0
-            self.ishaZenith = 108.0     # 90 + 18.0
-        elif zenith_ref == 2: # 2 = World Islamic League
+            self.ishaaZenith = 108.0    # 90 + 18.0
+        elif zenith_ref == 2: # 2 = Muslim World League
             self.fajrZenith = 108.0     # 90 + 18.0
-            self.ishaZenith = 107.0     # 90 + 17.0
-        elif zenith_ref == 3: # 3 = Egiptian General Organization of Surveying (default)
+            self.ishaaZenith = 107.0    # 90 + 17.0
+        elif zenith_ref == 3: # 3 = Egyptian General Authority of Survey (default)
             self.fajrZenith = 109.5     # 90 + 19.5
-            self.ishaZenith = 107.5     # 90 + 17.5
-        elif zenith_ref == 4: # 4 = Um Al-Qura Committee
+            self.ishaaZenith = 107.5    # 90 + 17.5
+        elif zenith_ref == 4: # 4 = Umm al-Qura University, Makkah
             self.fajrZenith = 108.5     # 90 + 18.5
-            self.ishaZenith = 0.0       # 90 minutes after the maghreb time (or 120 minutes in Ramadan only)
+            self.ishaaZenith = 0.0      # 90 minutes after the maghreb time (or 120 minutes in Ramadan only)
         elif zenith_ref == 5: # 5 = Islamic Society of North America
             self.fajrZenith = 105.0     # 90 + 15.0
-            self.ishaZenith = 105.0     # 90 + 15.0
+            self.ishaaZenith = 105.0    # 90 + 15.0
 
 
 class Prayer: # Prayer times and qiblah calculating class
@@ -73,14 +88,17 @@ class Prayer: # Prayer times and qiblah calculating class
 
 
     def fajrTime(self): # Fajr Time
-        return self.duhrTime() - self.__prayerTime(self.__conf.fajrZenith)
+        '''Get the Fajr time'''
+        return self.dohrTime() - self.__prayerTime(self.__conf.fajrZenith)
 
 
     def sherookTime(self): # Sherook Time
-        return self.duhrTime() - self.__prayerTime(self.__conf.sherookZenith)
+        '''Get the Sunrise (Sherook) time'''
+        return self.dohrTime() - self.__prayerTime(self.__conf.sherookZenith)
 
 
-    def duhrTime(self): # Duhr Time
+    def dohrTime(self): # Dohr Time
+        '''Get the Dohr time'''
         ld = self.__conf.longitudeDifference
         time_eq = self.__equationOfTime()
         duhr_t = 12 + ld + time_eq / 60
@@ -88,27 +106,30 @@ class Prayer: # Prayer times and qiblah calculating class
 
 
     def asrTime(self): # Asr Time
-        return self.duhrTime() + self.__prayerTime(self.__asrZenith())
+        '''Get the Asr time'''
+        return self.dohrTime() + self.__prayerTime(self.__asrZenith())
 
 
     def maghrebTime(self): # Maghreb Time
-        return self.duhrTime() + self.__prayerTime(self.__conf.maghrebZenith)
+        '''Get the Maghreb time'''
+        return self.dohrTime() + self.__prayerTime(self.__conf.maghrebZenith)
 
 
-    def ishaTime(self): # Isha Time
-        if (self.__conf.ishaZenith == 0.0):
+    def ishaaTime(self): # ishaa Time
+        '''Get the Ishaa time'''
+        if (self.__conf.ishaaZenith == 0.0):
             hij = today(1)
             if (hij.month == 9):
-                isha_t = self.maghreb_time() + 2.0 # 2.0 hours = 120 minutes
+                ishaa_t = self.maghreb_time() + 2.0 # 2.0 hours = 120 minutes
             else:
-                isha_t = self.maghreb_time() + 1.5 # 1.5 hours = 90 minutes
+                ishaa_t = self.maghreb_time() + 1.5 # 1.5 hours = 90 minutes
         else:
-            isha_t = self.__prayerTime(self.__conf.ishaZenith)
-            isha_t = self.duhrTime() + isha_t
-        return isha_t
+            ishaa_t = self.__prayerTime(self.__conf.ishaaZenith)
+            ishaa_t = self.dohrTime() + ishaa_t
+        return ishaa_t
 
 
-    def __prayerTime(self, zenith): # Get Times for "Fajr, Sherook, Asr, Maghreb, Isha"
+    def __prayerTime(self, zenith): # Get Times for "Fajr, Sherook, Asr, Maghreb, ishaa"
         delta = self.__sunDeclination()
         s = (dcos(zenith) - dsin(self.__conf.latitude) * dsin(delta)) / (dcos(self.__conf.latitude) * dcos(delta))
         return (180 / pi * (atan(-s / sqrt(-s * s + 1)) + pi / 2)) / 15

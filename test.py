@@ -3,7 +3,10 @@
 
 from pyIslam.praytimes import *
 from pyIslam.hijri import *
+from pyIslam.baselib import toSixty
+from pyIslam.qiblah import Qiblah
 from datetime import date, time
+
 
 # Latitude = 36.716667
 # Longitude = 3.250000
@@ -28,7 +31,7 @@ if longitude == '':
 	latitude = 36.716667
 	timezone = 1
 	fajr_isha_method = 3
-	asr_relig = 1
+	asr_fiqh = 1
 else:
 	latitude = float(input('2. Enter the latitude of your city: '))
 	timezone = float(input('3. Enter the timezone of your country (GMT+n): '))
@@ -41,9 +44,9 @@ else:
 
 	print('\n5. Choose the Asr Madhab:\n-------------------------------------')
 	print('1 = Shafii\n2 = Hanafi')
-	asr_relig = int(input('Enter your choose (1 or 2): '))
+	asr_fiqh = int(input('Enter your choose (1 or 2): '))
 
-pconf=PrayConf(float(longitude), latitude, timezone, fajr_isha_method, asr_relig, False)
+pconf=PrayerConf(float(longitude), latitude, timezone, fajr_isha_method, asr_fiqh, False)
 pt = Prayer(pconf, date.today())
 
 h = HijriDate.today(1)
@@ -57,14 +60,14 @@ def tz(t):
 	else: return 'GMT+' + str(t)
 print('Timezone:\n\t', tz(timezone))
 print('Fajr and Isha calculation method:\n\t', fi[fajr_isha_method - 1])
-print('Asr madhab:\n\t', ar[asr_relig - 1])
+print('Asr madhab:\n\t', ar[asr_fiqh - 1])
 
 print('\nPrayer times for: ' + hijri.format(2))
 print('Fajr:    ' + str(valToTime(pt.fajrTime())))
 print('Sherook: ' + str(valToTime(pt.sherookTime())))
-print('Duhr:    ' + str(valToTime(pt.duhrTime())))
+print('Dohr:    ' + str(valToTime(pt.dohrTime())))
 print('Asr:     ' + str(valToTime(pt.asrTime())))
 print('Maghreb: ' + str(valToTime(pt.maghrebTime())))
-print('Isha:    ' + str(valToTime(pt.ishaTime())))
+print('Ishaa:   ' + str(valToTime(pt.ishaaTime())))
 
-print('Qubla direction from the north: ' + str(Qiblah(pconf).direction()) + ' degree.')
+print('Qiblah direction from the north: ' + toSixty(Qiblah(pconf).direction()))
