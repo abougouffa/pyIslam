@@ -38,7 +38,7 @@ else:
 
 	print('\n4. Choose the Fajr and Ishaa reference:\n-------------------------------------')
 	for j in range(0,5):
-		print('%d = %s' %(j,fi[j]))
+		print('%d = %s' %(j+1,fi[j]))
 
 	fajr_isha_method = int(input('Enter your choice (from 1 to 5): '))
 
@@ -53,13 +53,14 @@ hijri = HijriDate.today(1)
 
 print('Longitude:\n\t', longitude)
 print('Latitude:\n\t', latitude)
+
 def tz(t):
 	if t < 0: return 'GMT' + str(t)
 	else: return 'GMT+' + str(t)
+
 print('Timezone:\n\t', tz(timezone))
 print('Fajr and Ishaa reference:\n\t', fi[fajr_isha_method - 1])
 print('Asr madhab:\n\t', ar[asr_fiqh - 1])
-
 print('\nPrayer times for: ' + hijri.format(2) + ' ' + str(hijri.toGregorian()))
 print('Fajr:    ' + str(pt.fajrTime()))
 print('Sherook: ' + str(pt.sherookTime()))
