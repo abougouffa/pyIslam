@@ -40,11 +40,11 @@ class HijriDate:
             else: self.day = day
         else: raise Exception('The day, month and year values must be integers')
     
-    @staticmethod
+
     def today(correction_val = 0):
         return HijriDate.getHijri(date.today(), correction_val)
 
-    @staticmethod
+
     def getHijri(dat, correction_val=0):
         if isinstance(dat, date):
             hijri=HijriDate(0,0,0)
