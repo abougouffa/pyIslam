@@ -24,12 +24,8 @@ from datetime import date, time
 from pyIslam.baselib import *
 
 class HijriDate:
-    year = 0
-    month = 0
-    day = 0
-    
-
-    def __init__(self, year, month, day): # Constructor
+    def __init__(self, year, month, day, correction_val=0): # Constructor
+        if correction_val
         if (type(year) is int) and (type(month) is int) and (type(day) is int):
             if year < 0: raise Exception('Year < 0')
             else: self.year = year
@@ -47,6 +43,8 @@ class HijriDate:
     def today(correction_val = 0):
         return getHijriDate(gregorianToJulianDay(date.today()), correction_val)
 
+    def toGregorian(self):
+        getGregorianDate(hijriToJulianDay(self))
 
     def format(self, lang = 0):
         '''lang: 1 = Arabic, 2: English, without = Numeric'''
