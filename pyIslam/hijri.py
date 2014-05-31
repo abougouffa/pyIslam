@@ -25,7 +25,8 @@ from pyIslam.baselib import *
 
 class HijriDate:
     def __init__(self, year, month, day, correction_val=0): # Constructor
-        if correction_val
+        if not (correction_val in range(-1,2)):
+            raise Exception('Correction value exception')
         if (type(year) is int) and (type(month) is int) and (type(day) is int):
             if year < 0: raise Exception('Year < 0')
             else: self.year = year
@@ -41,10 +42,20 @@ class HijriDate:
     
     @staticmethod
     def today(correction_val = 0):
-        return getHijriDate(gregorianToJulianDay(date.today()), correction_val)
+        return HijriDate.getHijri(date.today(), correction_val)
+
+    @staticmethod
+    def getHijri(dat, correction_val=0):
+        if isinstance(dat, date):
+            hijri=HijriDate(0,0,0)
+            h_date=getHijriDate(gregorianToJulianDay(dat), correction_val)
+            hijri.year, hijri.month, hijri.day = h_date[0], h_date[1], h_date[2]
+            return hijri
+        else:
+            raise Exception('dat is not a date object')
 
     def toGregorian(self):
-        getGregorianDate(hijriToJulianDay(self))
+        return getGregorianDate(hijriToJulianDay(self))
 
     def format(self, lang = 0):
         '''lang: 1 = Arabic, 2: English, without = Numeric'''
