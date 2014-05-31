@@ -36,30 +36,30 @@ else:
 	latitude = float(input('2. Enter the latitude of your city: '))
 	timezone = float(input('3. Enter the timezone of your country (GMT+n): '))
 
-	print('\n4. Choose the Fajr and Isha calculation method:\n-------------------------------------')
+	print('\n4. Choose the Fajr and Ishaa reference:\n-------------------------------------')
 	for j in range(0,5):
 		print('%d = %s' %(j,fi[j]))
 
-	fajr_isha_method = int(input('Enter your choose (from 1 to 5): '))
+	fajr_isha_method = int(input('Enter your choice (from 1 to 5): '))
 
 	print('\n5. Choose the Asr Madhab:\n-------------------------------------')
 	print('1 = Shafii\n2 = Hanafi')
-	asr_fiqh = int(input('Enter your choose (1 or 2): '))
+	asr_fiqh = int(input('Enter your choice (1 or 2): '))
 
 pconf=PrayerConf(float(longitude), latitude, timezone, fajr_isha_method, asr_fiqh, False)
 pt = Prayer(pconf, date.today())
 
-h = HijriDate.today(1)
+h = HijriDate.today(1) # Correction is set to 1
 
 hijri = HijriDate(h[0], h[1], h[2])
 
 print('Longitude:\n\t', longitude)
 print('Latitude:\n\t', latitude)
 def tz(t):
-	if t < 0: return 'GMT' + str(t) 
+	if t < 0: return 'GMT' + str(t)
 	else: return 'GMT+' + str(t)
 print('Timezone:\n\t', tz(timezone))
-print('Fajr and Isha calculation method:\n\t', fi[fajr_isha_method - 1])
+print('Fajr and Ishaa reference:\n\t', fi[fajr_isha_method - 1])
 print('Asr madhab:\n\t', ar[asr_fiqh - 1])
 
 print('\nPrayer times for: ' + hijri.format(2))
