@@ -48,16 +48,17 @@ class PrayerConf:
             self.ishaaZenith = 107.5    # 90 + 17.5
         elif zenith_ref == 4: # 4 = Umm al-Qura University, Makkah
             self.fajrZenith = 108.5     # 90 + 18.5
-            self.ishaaZenith = 0.0      # 90 minutes after the maghreb time (or 120 minutes in Ramadan only)
+            self.ishaaZenith = None     # 90 minutes after the maghreb time (or 120 minutes in Ramadan only)
         elif zenith_ref == 5: # 5 = Islamic Society of North America
             self.fajrZenith = 105.0     # 90 + 15.0
             self.ishaaZenith = 105.0    # 90 + 15.0
 
 
 class Prayer: # Prayer times and qiblah calculating class
-    def __init__(self, conf, dat):
+    def __init__(self, conf, dat, correction_val=0):
         self.__conf=conf
         self.__date=dat
+        self.__correction_val=correction_val
 
     def __equationOfTime(self): # Get equation of time
         n = gregorianToJulianDay(self.__date) - 2451544.5
@@ -137,9 +138,8 @@ class Prayer: # Prayer times and qiblah calculating class
 
     def ishaaTime(self, shift=0.0): # ishaa Time
         '''Get the Ishaa time'''
-        if (self.__conf.ishaaZenith == 0.0):
-            hij = today(1)
-            if (hij.month == 9):
+        if (self.__conf.ishaaZenith == None): # ishaaZenith==None <=> method == Umm al-Qura University, Makkah
+            if HijriDate.getHijri(self.__date, self.__correction_val).month == 9:
                 ishaa_t = self.maghreb_time() + 2.0 # 2.0 hours = 120 minutes
             else:
                 ishaa_t = self.maghreb_time() + 1.5 # 1.5 hours = 90 minutes
