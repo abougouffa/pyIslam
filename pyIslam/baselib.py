@@ -104,12 +104,3 @@ def toSixty(deg): # Convert an angle from degree to sixty
 	six = six + " " + str(int(deg)) + "''"
 	deg = (deg - int(deg)) * 60
 	return six
-
-
-def valToTime(val, summer_time = False): # Convert a decimal value (in hours) to time object
-	if summer_time: st = 1
-	else: st = 0
-	hours = val
-	minutes = (hours - int(hours)) * 60
-	seconds = (minutes - int(minutes)) * 60
-	return time((int(hours) + st), int(minutes), int(seconds))

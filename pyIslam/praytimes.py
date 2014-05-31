@@ -89,15 +89,15 @@ class Prayer: # Prayer times and qiblah calculating class
 
     def fajrTime(self): # Fajr Time
         '''Get the Fajr time'''
-        return self.dohrTime() - self.__prayerTime(self.__conf.fajrZenith)
+        return Prayer._Prayer__hoursToTime(self.__dohrTime() - self.__prayerTime(self.__conf.fajrZenith))
 
 
     def sherookTime(self): # Sherook Time
         '''Get the Sunrise (Sherook) time'''
-        return self.dohrTime() - self.__prayerTime(self.__conf.sherookZenith)
+        return Prayer._Prayer__hoursToTime(self.__dohrTime() - self.__prayerTime(self.__conf.sherookZenith))
 
 
-    def dohrTime(self): # Dohr Time
+    def __dohrTime(self): # Dohr time for internal use, return number of hours, not time object
         '''Get the Dohr time'''
         ld = self.__conf.longitudeDifference
         time_eq = self.__equationOfTime()
@@ -105,14 +105,18 @@ class Prayer: # Prayer times and qiblah calculating class
         return duhr_t
 
 
+    def dohrTime(self): # Dohr Time
+        return Prayer._Prayer__hoursToTime(self.__dohrTime())
+
+
     def asrTime(self): # Asr Time
         '''Get the Asr time'''
-        return self.dohrTime() + self.__prayerTime(self.__asrZenith())
+        return Prayer._Prayer__hoursToTime(self.__dohrTime() + self.__prayerTime(self.__asrZenith()))
 
 
     def maghrebTime(self): # Maghreb Time
         '''Get the Maghreb time'''
-        return self.dohrTime() + self.__prayerTime(self.__conf.maghrebZenith)
+        return Prayer._Prayer__hoursToTime(self.__dohrTime() + self.__prayerTime(self.__conf.maghrebZenith))
 
 
     def ishaaTime(self): # ishaa Time
@@ -125,11 +129,20 @@ class Prayer: # Prayer times and qiblah calculating class
                 ishaa_t = self.maghreb_time() + 1.5 # 1.5 hours = 90 minutes
         else:
             ishaa_t = self.__prayerTime(self.__conf.ishaaZenith)
-            ishaa_t = self.dohrTime() + ishaa_t
-        return ishaa_t
+            ishaa_t = self.__dohrTime() + ishaa_t
+        return Prayer._Prayer__hoursToTime(ishaa_t)
 
 
     def __prayerTime(self, zenith): # Get Times for "Fajr, Sherook, Asr, Maghreb, ishaa"
         delta = self.__sunDeclination()
         s = (dcos(zenith) - dsin(self.__conf.latitude) * dsin(delta)) / (dcos(self.__conf.latitude) * dcos(delta))
         return (180 / pi * (atan(-s / sqrt(-s * s + 1)) + pi / 2)) / 15
+
+
+    def __hoursToTime(val, summer_time = False): # Convert a decimal value (in hours) to time object
+        if summer_time: st = 1
+        else: st = 0
+        hours = val
+        minutes = (hours - int(hours)) * 60
+        seconds = (minutes - int(minutes)) * 60
+        return time((int(hours) + st), int(minutes), int(seconds))
