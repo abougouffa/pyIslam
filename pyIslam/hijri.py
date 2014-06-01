@@ -20,13 +20,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 '''
 
 
-from datetime import date, time
+from datetime import date, time, timedelta
 from pyIslam.baselib import *
 
 class HijriDate:
-    def __init__(self, year, month, day, correction_val=0): # Constructor
-        if not (correction_val in range(-1,2)):
-            raise Exception('Correction value exception')
+    def __init__(self, year, month, day): # Constructor
         if (type(year) is int) and (type(month) is int) and (type(day) is int):
             if year < 0: raise Exception('Year < 0')
             else: self.year = year
@@ -39,6 +37,13 @@ class HijriDate:
             elif day > 30: raise Exception('Day > 30')
             else: self.day = day
         else: raise Exception('The day, month and year values must be integers')
+
+
+    def __sub__(self, value): # Return date dalta, self - value
+        if isinstance(value, HijriDate):
+            return timedelta(hijriToJulianDay(self) - hijriToJulianDay(value))
+        else:
+            raise TypeError("unsupported operand type(s) for -: %s and %s" %(str(type(self)), str(type(value))))
     
 
     def today(correction_val = 0):
