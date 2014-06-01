@@ -15,11 +15,11 @@ print('''Assalat Imade Eddin 0.1.1 - an islamic prayer times calculator
 Written by (Al-Fakir Ila Allah): Abdelhak Mohammed Bougouffa
 abdelhak.alg@gmail.com [or] abdelhak@cryptolab.net
 -------------------------------------''')
-fi = ('''University of Islamic Sciences, Karachi,
-Muslim World League,
-Egyptian General Authority of Survey,
-Umm al-Qura University, Makkah,
-Islamic Society of North America''')
+fi = ('University of Islamic Sciences, Karachi',
+      'Muslim World League',
+      'Egyptian General Authority of Survey',
+      'Umm al-Qura University, Makkah',
+      'Islamic Society of North America')
 
 ar = ('Shafii', 'Hanafi')
 
