@@ -58,7 +58,11 @@ class Prayer: # Prayer times and qiblah calculating class
     def __init__(self, conf, dat, correction_val=0):
         self.__conf=conf
         self.__date=dat
-        self.__correction_val=correction_val
+
+        if not (correction_val in range(-2,3)):
+            raise Exception('Correction value exception')
+        else:
+            self.__correction_val=correction_val
 
     def __equationOfTime(self): # Get equation of time
         n = gregorianToJulianDay(self.__date) - 2451544.5
