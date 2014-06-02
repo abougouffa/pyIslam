@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from pyIslam.praytimes import *
-from pyIslam.hijri import *
-from pyIslam.baselib import toSixty
+from pyIslam.praytimes import PrayerConf, Prayer
+from pyIslam.hijri import HijriDate
 from pyIslam.qiblah import Qiblah
 from datetime import date
 
@@ -75,4 +74,4 @@ print('Asr:     ' + str(pt.asrTime()))
 print('Maghreb: ' + str(pt.maghrebTime()))
 print('Ishaa:   ' + str(pt.ishaaTime()))
 
-print('Qiblah direction from the north: ' + toSixty(Qiblah(pconf).direction()))
+print('Qiblah direction from the north: ' + Qiblah(pconf).sixty())
