@@ -49,7 +49,8 @@ class HijriDate:
             raise Exception('dat is not a date object')
 
     def toGregorian(self):
-        return getGregorianDate(hijriToJulianDay(self))
+        gd = getGregorianDate(hijriToJulianDay(self))
+        return date(gd[0], gd[1], gd[2])
 
     def format(self, lang=0):
         '''lang: 1 = Arabic, 2: English, without = Numeric'''
