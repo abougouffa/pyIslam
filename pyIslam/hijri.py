@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date, timedelta
-from pyIslam.baselib import *
+from pyIslam.baselib import (getHijriDate, gregorianToJulianDay,
+                             hijriToJulianDay, getGregorianDate)
 
 
 class HijriDate:

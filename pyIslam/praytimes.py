@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from math import *
+from math import pi, atan, sqrt, tan
 from datetime import time
-from pyIslam.hijri import *
-from pyIslam.baselib import *
+from pyIslam.hijri import HijriDate
+from pyIslam.baselib import dcos, dsin, gregorianToJulianDay
 
 
 class PrayerConf:
