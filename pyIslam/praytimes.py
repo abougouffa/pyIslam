@@ -127,9 +127,9 @@ class Prayer:
             st = 0
 
         hours = val + shift/3600
-        minutes = (hours - int(hours)) * 60
-        seconds = (minutes - int(minutes)) * 60
-        return time((int(hours) + st), int(minutes), int(seconds))
+        minutes = (hours - floor(hours)) * 60
+        seconds = (minutes - floor(minutes)) * 60
+        return time((floor(hours) + st), floor(minutes), floor(seconds))
 
     def fajrTime(self, shift=0.0):
         '''Get the Fajr time'''

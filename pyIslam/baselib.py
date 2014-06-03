@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from math import cos, sin, pi
+from math import cos, sin, pi, ceil, floor
 from datetime import date
 
 
@@ -15,10 +15,10 @@ def dsin(deg):
 
 # Hijri date calculation methods
 def hijriToJulianDay(dat):
-    return (int((11 * dat.year + 3) / 30)
-            + int(354 * dat.year)
-            + int(30 * dat.month)
-            - int((dat.month - 1) / 2)
+    return (floor((11 * dat.year + 3) / 30)
+            + floor(354 * dat.year)
+            + floor(30 * dat.month)
+            - floor((dat.month - 1) / 2)
             + dat.day + 1948440 - 385)
 
 
@@ -51,50 +51,50 @@ def gregorianToJulianDay(dat):  # Julian Day
         month = month + 12
         year = year - 1
 
-    a = int(year / 100)
+    a = floor(year / 100)
     b = 0
 
     if is_gregorian_org:
-        b = 2 - a + int(a / 4)
+        b = 2 - a + floor(a / 4)
     elif is_julian_org:
         b = 0
 
-    return (int(365.25 * (year + 4716))
-            + int(30.6001 * (month + 1))
+    return (floor(365.25 * (year + 4716))
+            + floor(30.6001 * (month + 1))
             + day + b - 1524.5)
 
 
 def getHijriDate(julian_day, correction_val=0):
-    l = int(julian_day + correction_val) - 1937808
-    n = int((l - 1) / 10631)
+    l = floor(julian_day + correction_val) - 1948440 + 10632
+    n = floor((l - 1) / 10631)
     l = l - 10631 * n + 354
-    j = (int((10985 - l) / 5316) * int((50 * l) / 17719)
-         + int(l / 5670) * int((43 * l) / 15238))
-    l = (l - int((30 - j) / 15) * int((17719 * j) / 50)
-         - int(j / 16) * int((15238 * j) / 43) + 29)
-    month = int((24 * l) / 709)
-    day = l - int((709 * month) / 24)
-    year = int(30 * n + j - 30)
+    j = (floor((10985 - l) / 5316) * floor((50 * l) / 17719)
+         + floor(l / 5670) * floor((43 * l) / 15238))
+    l = (l - floor((30 - j) / 15) * floor((17719 * j) / 50)
+         - floor(j / 16) * floor((15238 * j) / 43) + 29)
+    month = floor((24 * l) / 709)
+    day = l - floor((709 * month) / 24)
+    year = floor(30 * n + j - 30)
     return (year, month, day)
 
 
 def getGregorianDate(jd):
-    z = int(jd)
+    z = floor(jd)
     f = jd - z
 
     if z < 2299161:
         a = z
     else:
-        alpha = int((z - 1867216.25) / 36524.25)
-        a = z + 1 + alpha - int((alpha / 4))
+        alpha = floor((z - 1867216.25) / 36524.25)
+        a = z + 1 + alpha - floor((alpha / 4))
 
     b = a + 1524
-    c = int((b - 122.1) / 365.25)
-    d = int(365.25 * c)
-    e = int((b - d) / 30.6001)
+    c = floor((b - 122.1) / 365.25)
+    d = floor(365.25 * c)
+    e = floor((b - d) / 30.6001)
 
     # Calculate the day
-    day = b - d - int(30.6001 * e) + f
+    day = b - d - floor(30.6001 * e) + f
 
     # Calculate the month
     if e < 14:
