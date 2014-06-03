@@ -31,9 +31,11 @@ class HijriDate:
         else:
             raise TypeError('day must be an int')
 
+        self.__julian = hijriToJulianDay(self)
+
     def __sub__(self, value):  # Return date dalta, self - value
         if isinstance(value, HijriDate):
-            return timedelta(hijriToJulianDay(self) - hijriToJulianDay(value))
+            return timedelta(self.__julian - hijriToJulianDay(value))
         else:
             raise TypeError("unsupported operand type(s) for -: %s and %s"
                             % (str(type(self)), str(type(value))))
@@ -47,7 +49,6 @@ class HijriDate:
 
     def getHijri(dat, correction_val=0):
         '''get hijri date from gregorian date "dat"'''
-
         if isinstance(dat, date):
             hd = getHijriDate(gregorianToJulianDay(dat), correction_val)
             return HijriDate(hd[0], hd[1], hd[2])
@@ -55,8 +56,11 @@ class HijriDate:
             raise TypeError("dat is not a 'date' object")
 
     def toGregorian(self):
-        gd = getGregorianDate(hijriToJulianDay(self))
+        gd = getGregorianDate(self.__julian)
         return date(gd[0], gd[1], gd[2])
+
+    def nextDate(self):
+        return HijriDate.fromJulian(self.__julian + 1)
 
     def format(self, lang=0):
         '''lang: 1 = Arabic, 2: English, without = Numeric'''
@@ -94,6 +98,5 @@ class HijriDate:
         if lang == 0:  # Numeric Format
             return '%02d-%02d-%04d' % (self.day, self.month, self.year)
 
-        return (str(self.day) + ' '
-                + month_name[lang][self.month - 1]
-                + ' ' + str(self.year))
+        return '%s %s %s' % (str(self.day), month_name[lang][self.month - 1],
+                             str(self.year))
