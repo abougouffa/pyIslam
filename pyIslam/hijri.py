@@ -7,27 +7,29 @@ from pyIslam.baselib import (getHijriDate, gregorianToJulianDay,
 
 class HijriDate:
     def __init__(self, year, month, day):  # Constructor
-        if (type(year) is int) and (type(month) is int) and (type(day) is int):
+        if isinstance(year, int):
             if year < 0:
-                raise Exception('Year < 0')
+                raise ValueError('year must be positive')
             else:
                 self.year = year
+        else:
+            raise TypeError('year must be an int')
 
-            if month < 0:
-                raise Exception('Month < 0')
-            elif month > 12:
-                raise Exception('Month > 12')
+        if isinstance(month, int):
+            if not (month in range(1, 13)):
+                raise ValueError('month should be bitween 1 and 12')
             else:
                 self.month = month
+        else:
+            raise TypeError('month must be an int')
 
-            if day < 0:
-                raise Exception('Day < 0')
-            elif day > 30:
-                raise Exception('Day > 30')
+        if isinstance(day, int):
+            if not (month in range(1, 31)):
+                raise ValueError('day should be bitween 1 and 30')
             else:
                 self.day = day
         else:
-            raise Exception('The day, month and year values must be integers')
+            raise TypeError('day must be an int')
 
     def __sub__(self, value):  # Return date dalta, self - value
         if isinstance(value, HijriDate):
@@ -39,14 +41,18 @@ class HijriDate:
     def today(correction_val=0):
         return HijriDate.getHijri(date.today(), correction_val)
 
+    def fromJulian(jd, correction_val=0):
+        hd = getHijriDate(jd, correction_val)
+        return HijriDate(hd[0], hd[1], hd[2])
+
     def getHijri(dat, correction_val=0):
+        '''get hijri date from gregorian date "dat"'''
+
         if isinstance(dat, date):
-            hijri = HijriDate(0, 0, 0)
             hd = getHijriDate(gregorianToJulianDay(dat), correction_val)
-            hijri.year, hijri.month, hijri.day = hd[0], hd[1], hd[2]
-            return hijri
+            return HijriDate(hd[0], hd[1], hd[2])
         else:
-            raise Exception('dat is not a date object')
+            raise TypeError("dat is not a 'date' object")
 
     def toGregorian(self):
         gd = getGregorianDate(hijriToJulianDay(self))
@@ -54,6 +60,11 @@ class HijriDate:
 
     def format(self, lang=0):
         '''lang: 1 = Arabic, 2: English, without = Numeric'''
+
+        if not isinstance(lang, int):
+            raise TypeError('lang should be an int')
+        elif not (lang in range(0, 3)):
+            raise ValueError('lang should be bitween 0 and 2')
 
         month_name = {1: (u'محرم',
                           u'صفر',
