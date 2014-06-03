@@ -63,7 +63,7 @@ class HijriDate:
         return HijriDate.fromJulian(self.__julian + 1)
 
     def isLast(self):
-        if self.year < self.nextDate().year:
+        if self.month != self.nextDate().month:
             return True
         else:
             return False
