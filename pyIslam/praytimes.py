@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from math import pi, atan, sqrt, tan
+from math import pi, atan, sqrt, tan, floor
 from datetime import time
 from pyIslam.hijri import HijriDate
 from pyIslam.baselib import dcos, dsin, gregorianToJulianDay
