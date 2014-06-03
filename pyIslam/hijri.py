@@ -62,6 +62,12 @@ class HijriDate:
     def nextDate(self):
         return HijriDate.fromJulian(self.__julian + 1)
 
+    def isLast(self):
+        if self.year < self.nextDate().year:
+            return True
+        else:
+            return False
+
     def format(self, lang=0):
         '''lang: 1 = Arabic, 2: English, without = Numeric'''
 
