@@ -32,6 +32,10 @@ def gregorianToJulianDay(dat):  # Julian Day
     if dat is None:
         dat = date.today()
 
+    if month == 1 or month == 2:
+        month = month + 12
+        year = year - 1
+
     if year > 1582:
         is_gregorian_org = True
     elif year < 1582:
@@ -46,10 +50,6 @@ def gregorianToJulianDay(dat):  # Julian Day
                 is_gregorian_org = True
             elif day <= 15:
                 is_julian_org = True
-
-    if month == 1 or month == 2:
-        month = month + 12
-        year = year - 1
 
     a = floor(year / 100)
     b = 0
