@@ -56,8 +56,6 @@ def gregorianToJulianDay(dat):  # Julian Day
 
     if is_gregorian_org:
         b = 2 - a + floor(a / 4)
-    elif is_julian_org:
-        b = 0
 
     return (floor(365.25 * (year + 4716))
             + floor(30.6001 * (month + 1))
