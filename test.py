@@ -32,6 +32,7 @@ if longitude == '':
     fajr_isha_method = 3
     asr_fiqh = 1
 else:
+    longitude = float(longitude)
     latitude = float(input('2. Enter the latitude of your city: '))
     timezone = float(input('3. Enter the timezone of your country (GMT+n): '))
 
@@ -46,15 +47,13 @@ else:
     print('1 = Shafii\n2 = Hanafi')
     asr_fiqh = int(input('Enter your choice (1 or 2): '))
 
-pconf = PrayerConf(float(longitude), latitude, timezone, fajr_isha_method,
-                   asr_fiqh, False)
-pt = Prayer(pconf, date.today())
+pconf = PrayerConf(longitude, latitude, timezone, fajr_isha_method, asr_fiqh)
 
+pt = Prayer(pconf, date.today())
 hijri = HijriDate.today(1)
 
 print('Longitude:\n\t', longitude)
 print('Latitude:\n\t', latitude)
-
 
 def tz(t):
     if t < 0:
