@@ -7,13 +7,12 @@ from pyIslam.hijri import HijriDate
 
 year = 1
 hi = HijriDate(year, 1, 1)
-days = list()
-days.append(list())
+days = [[]]
 
 while hi.year < 1435:
     next_hi = hi.nextDate()
     if next_hi.year != hi.year:
-        days.append(list())
+        days.append([])
 
     if next_hi.isLast():
         days[next_hi.year - year].append \
