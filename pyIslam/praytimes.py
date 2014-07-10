@@ -42,21 +42,14 @@ class PrayerConf:
 
         self.summerTime = enable_summer_time
 
-        if zenith_ref == 1:   # 1 = University of Islamic Sciences, Karachi
-            self.fajrZenith = 108.0     # 90 + 18.0
-            self.ishaaZenith = 108.0    # 90 + 18.0
-        elif zenith_ref == 2:  # 2 = Muslim World League
-            self.fajrZenith = 108.0     # 90 + 18.0
-            self.ishaaZenith = 107.0    # 90 + 17.0
-        elif zenith_ref == 3:  # 3 = Egyptian General Authority of Survey
-            self.fajrZenith = 109.5     # 90 + 19.5
-            self.ishaaZenith = 107.5    # 90 + 17.5
-        elif zenith_ref == 4:  # 4 = Umm al-Qura University, Makkah
-            self.fajrZenith = 108.5     # 90 + 18.5
-            self.ishaaZenith = None     # 90'' after maghreb, 120'' in Ramadan
-        elif zenith_ref == 5:  # 5 = Islamic Society of North America
-            self.fajrZenith = 105.0     # 90 + 15.0
-            self.ishaaZenith = 105.0    # 90 + 15.0
+        zeniths = {1: (108.0, 108.0), # 1 = University of Islamic Sciences, Karachi
+                   2: (108.0, 107.0), # 2 = Muslim World League
+                   3: (109.5, 107.5), # 3 = Egyptian General Authority of Survey
+                   4: (108.5, None),  # 4 = Umm al-Qura University, Makkah
+                   5: (105.0, 105.0)} # 5 = Islamic Society of North America
+
+        # Pythonista way to write switch-case instruction
+        (fajrZenith, ishaaZenith) = zeniths.get(zenith_ref, zeniths[3])
 
 
 class Prayer:
