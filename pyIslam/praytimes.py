@@ -49,7 +49,7 @@ class PrayerConf:
                    5: (105.0, 105.0)} # 5 = Islamic Society of North America
 
         # Pythonista way to write switch-case instruction
-        (fajrZenith, ishaaZenith) = zeniths.get(zenith_ref, zeniths[3])
+        (self.fajrZenith, self.ishaaZenith) = zeniths.get(zenith_ref, zeniths[3])
 
 
 class Prayer:
