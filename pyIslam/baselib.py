@@ -23,9 +23,6 @@ def hijriToJulianDay(dat):
 
 
 def gregorianToJulianDay(dat):  # Julian Day
-    is_julian_org = False
-    is_gregorian_org = False
-
     if dat is None:
         dat = date.today()
 
@@ -37,25 +34,11 @@ def gregorianToJulianDay(dat):  # Julian Day
         month = month + 12
         year = year - 1
 
-    if year > 1582:
-        is_gregorian_org = True
-    elif year < 1582:
-        is_julian_org = True
-    elif year == 1582:
-        if month > 10:
-            is_gregorian_org = True
-        elif month < 10:
-            is_julian_org = True
-        elif month == 10:
-            if day > 15:
-                is_gregorian_org = True
-            elif day <= 15:
-                is_julian_org = True
-
     a = floor(year / 100)
     b = 0
 
-    if is_gregorian_org:
+    if year > 1582 or (year == 1582 and (month > 10 or (month == 10 and day > 15))):
+        # If it is a gregorian calendar set b
         b = 2 - a + floor(a / 4)
 
     return (floor(365.25 * (year + 4716))
