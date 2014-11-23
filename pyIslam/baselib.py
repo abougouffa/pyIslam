@@ -25,12 +25,13 @@ def hijriToJulianDay(dat):
 def gregorianToJulianDay(dat):  # Julian Day
     is_julian_org = False
     is_gregorian_org = False
-    day = dat.day
-    month = dat.month
-    year = dat.year
 
     if dat is None:
         dat = date.today()
+
+    day = dat.day
+    month = dat.month
+    year = dat.year
 
     if month == 1 or month == 2:
         month = month + 12
