@@ -8,3 +8,10 @@ Now, the library can does:
 * Pray times calculation
 * Hijri/Gregorian date convertion
 * Qibla direction
+
+
+pyIslam<br>
+هي مكتبة بيثون لحساب أوقات الصلاة والتحويل بين الميلادي والهجري.<br> يمكن للمكتبة :
+-حساب مرات الصلوات<br>
+- التحويل بين الهجري و الميلادي<br>
+- تحديد  اتجاه القبلة<br>
