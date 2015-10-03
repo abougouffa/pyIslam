@@ -2,16 +2,24 @@ pyIslam
 ===========
 [![Build Status](https://travis-ci.org/abougouffa/pyIslam.svg?branch=master)](https://travis-ci.org/a-bougouffa/pyIslam)
 
-pyIslam is a python library to calculate prayer times and convert between gregorian and hijri.
+**_pyIslam_** is a python islamic library, it will be able (when completed) to calculate **prayer times**, **qibla** direction, convert between gregorian and **hijri**, calculate **zakat** and **mirath**.
+
 Actually, the library can does:
 
-* Pray times calculation
-* Hijri/Gregorian date conversion
-* Qibla direction
+- [x] Pray times calculation
+- [x] Hijri/Gregorian date conversion
+- [x] Qibla direction
+- [ ] Zakat calculation
+- [ ] Mirath calculation
 
+------
+pyIslam
+هي مكتبة إسلامية للغة البرمجة بايثون، ستكون المكتبة قادرة على (عندما تكتمل) حساب **أوقات الصلاة**، اتجاه **القبلة**، التحويل بين التاريخ الميلادي و**الهجري**، حساب مقادير **الزكاة** وحساب **الميراث**.
 
-pyIslam<br>
-هي مكتبة بيثون لحساب أوقات الصلاة والتحويل بين الميلادي والهجري.<br> يمكن للمكتبة :
--حساب مرات الصلوات<br>
-- التحويل بين الهجري و الميلادي<br>
-- تحديد  اتجاه القبلة<br>
+حاليا، المكتبة تستطيع أن تقوم بـ:
+
+- [x] حساب مواقيت الصلاة
+- [x] التحويل بين التاريخ الهجري والميلادي
+- [x] تحديد اتجاه القبلة
+- [ ] حساب الزكاة
+- [ ] حساب الميراث
