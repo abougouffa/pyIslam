@@ -41,7 +41,7 @@ def gregorianToJulianDay(dat):  # Julian Day
         # If it is a gregorian calendar set b
         b = 2 - a + floor(a / 4)
 
-    return (floor(365.25 * (year + 4716))
+    return ceil(floor(365.25 * (year + 4716))
             + floor(30.6001 * (month + 1))
             + day + b - 1524.5)
 
