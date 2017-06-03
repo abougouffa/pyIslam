@@ -12,9 +12,8 @@ def dcos(deg):
 def dsin(deg):
     return sin((deg * pi) / 180)
 
-
 # Hijri date calculation methods
-def hijriToJulianDay(dat):
+def hijri_to_julian(dat):
     return (floor((11 * dat.year + 3) / 30)
             + floor(354 * dat.year)
             + floor(30 * dat.month)
@@ -22,7 +21,7 @@ def hijriToJulianDay(dat):
             + dat.day + 1948440 - 385)
 
 
-def gregorianToJulianDay(dat):  # Julian Day
+def gregorian_to_julian(dat):  # Julian Day
     if dat is None:
         dat = date.today()
 
@@ -46,7 +45,7 @@ def gregorianToJulianDay(dat):  # Julian Day
             + day + b - 1524.5)
 
 
-def getHijriDate(julian_day, correction_val=0):
+def julian_to_hijri(julian_day, correction_val=0):
     l = floor(julian_day + correction_val) - 1948440 + 10632
     n = floor((l - 1) / 10631)
     l = l - 10631 * n + 354
@@ -60,7 +59,7 @@ def getHijriDate(julian_day, correction_val=0):
     return (year, month, day)
 
 
-def getGregorianDate(jd):
+def julian_to_gregorian(jd):
     z = floor(jd)
     f = jd - z
 
@@ -87,6 +86,7 @@ def getGregorianDate(jd):
     # Calculate the year
     if month > 2:
         year = c - 4716
+
     elif month == 1 or month == 2:
         year = c - 4715
 

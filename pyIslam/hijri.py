@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date, timedelta
-from pyIslam.baselib import (getHijriDate, gregorianToJulianDay,
-                             hijriToJulianDay, getGregorianDate)
+from pyIslam.baselib import julian_to_hijri, gregorian_to_julian, hijri_to_julian, julian_to_gregorian
 
 
 class HijriDate:
@@ -31,39 +30,24 @@ class HijriDate:
         else:
             raise TypeError('day must be an int')
 
-        self.__julian = hijriToJulianDay(self)
+        self._julian = hijri_to_julian(self)
 
     def __sub__(self, value):  # Return date dalta, self - value
         if isinstance(value, HijriDate):
-            return timedelta(self.__julian - hijriToJulianDay(value))
+            return timedelta(self._julian - hijri_to_julian(value))
         else:
             raise TypeError("unsupported operand type(s) for -: %s and %s"
                             % (str(type(self)), str(type(value))))
 
-    def today(correction_val=0):
-        return HijriDate.getHijri(date.today(), correction_val)
-
-    def fromJulian(jd, correction_val=0):
-        hd = getHijriDate(jd, correction_val)
-        return HijriDate(hd[0], hd[1], hd[2])
-
-    def getHijri(dat, correction_val=0):
-        '''get hijri date from gregorian date "dat"'''
-        if isinstance(dat, date):
-            hd = getHijriDate(gregorianToJulianDay(dat), correction_val)
-            return HijriDate(hd[0], hd[1], hd[2])
-        else:
-            raise TypeError("dat is not a 'date' object")
-
-    def toGregorian(self):
-        gd = getGregorianDate(self.__julian)
+    def to_gregorian(self):
+        gd = julian_to_gregorian(self._julian)
         return date(gd[0], gd[1], gd[2])
 
-    def nextDate(self):
-        return HijriDate.fromJulian(self.__julian + 1)
+    def next_date(self):
+        return HijriDate.from_julian(self._julian + 1)
 
-    def isLast(self):
-        if self.month != self.nextDate().month:
+    def is_last(self):
+        if self.month != self.next_date().month:
             return True
         else:
             return False
@@ -106,3 +90,21 @@ class HijriDate:
 
         return '%s %s %s' % (str(self.day), month_name[lang][self.month - 1],
                              str(self.year))
+
+    @staticmethod
+    def today(correction_val=0):
+        return HijriDate.get_hijri(date.today(), correction_val)
+
+    @staticmethod
+    def from_julian(jd, correction_val=0):
+        hd = julian_to_hijri(jd, correction_val)
+        return HijriDate(hd[0], hd[1], hd[2])
+
+    @staticmethod
+    def get_hijri(dat, correction_val=0):
+        '''get hijri date from gregorian date "dat"'''
+        if isinstance(dat, date):
+            hd = julian_to_hijri(gregorian_to_julian(dat), correction_val)
+            return HijriDate(hd[0], hd[1], hd[2])
+        else:
+            raise TypeError("dat is not a 'date' object")

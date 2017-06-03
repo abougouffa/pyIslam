@@ -3,7 +3,8 @@
 from math import pi, atan, sqrt, tan, floor
 from datetime import time
 from pyIslam.hijri import HijriDate
-from pyIslam.baselib import dcos, dsin, gregorianToJulianDay
+from pyIslam.baselib import dcos, dsin, gregorian_to_julian
+from math import *
 
 
 class PrayerConf:
@@ -29,18 +30,18 @@ class PrayerConf:
         self.longitude = longitude
         self.latitude = latitude
         self.timezone = timezone
-        self.sherookZenith = 90.83333  # Constants
-        self.maghrebZenith = 90.83333
+        self.sherook_zenith = 90.83333  # Constants
+        self.maghreb_zenith = 90.83333
 
         if asr_madhab == 2:
-            self.asrMadhab = asr_madhab  # 1 = Shafii, 2 = Hanafi
+            self.asr_madhab = asr_madhab  # 1 = Shafii, 2 = Hanafi
         else:
-            self.asrMadhab = 1
+            self.asr_madhab = 1
 
-        self.middleLongitude = self.timezone * 15
-        self.longitudeDifference = (self.middleLongitude - self.longitude) / 15
+        self.middle_longitude = self.timezone * 15
+        self.longitude_difference = (self.middle_longitude - self.longitude) / 15
 
-        self.summerTime = enable_summer_time
+        self.summer_time = enable_summer_time
 
         zeniths = {1: (108.0, 108.0), # 1 = University of Islamic Sciences, Karachi
                    2: (108.0, 107.0), # 2 = Muslim World League
@@ -49,23 +50,23 @@ class PrayerConf:
                    5: (105.0, 105.0)} # 5 = Islamic Society of North America
 
         # Pythonista way to write switch-case instruction
-        (self.fajrZenith, self.ishaaZenith) = zeniths.get(zenith_ref, zeniths[3])
+        (self.fajr_zenith, self.ishaa_zenith) = zeniths.get(zenith_ref, zeniths[3])
 
 
 class Prayer:
     '''Prayer times and qiblah calculating class'''
     def __init__(self, conf, dat, correction_val=0):
-        self.__conf = conf
-        self.__date = dat
+        self._conf = conf
+        self._date = dat
 
         if not (correction_val in range(-2, 3)):
             raise Exception('Correction value exception')
         else:
-            self.__correction_val = correction_val
+            self._correction_val = correction_val
 
-    def __equationOfTime(self):
+    def _equation_of_time(self):
         '''Get equation of time'''
-        n = gregorianToJulianDay(self.__date) - 2451544.5
+        n = gregorian_to_julian(self._date) - 2451544.5
         g = 357.528 + 0.9856003 * n
         c = 1.9148 * dsin(g) + 0.02 * dsin(2 * g) + 0.0003 * dsin(3 * g)
         lamda = 280.47 + 0.9856003 * n + c
@@ -73,99 +74,124 @@ class Prayer:
              + 0.053 * dsin(4 * lamda)
              + 0.0014 * dsin(6 * lamda))
         return (c + r) * 4
+        # jd = gregorian_to_julian(self._date)
+        # d = jd - 2451545.0
 
-    def __asrZenith(self):
+        # g = 357.529 + 0.98560028* d
+        # q = 280.459 + 0.98564736* d
+        # L = q + 1.915* dsin(g) + 0.020* dsin(2*g)
+
+        # R = 1.00014 - 0.01671* dcos(g) - 0.00014* dcos(2*g)
+        # e = 23.439 - 0.00000036* d
+        # RA = atan2(dcos(e)* dsin(L), dcos(L))/ 15
+
+        # D = asin(dsin(e)* dsin(L))# declination of the Sun
+        # EqT = q/15.0 - RA# equation of time
+        # return EqT
+
+    def _asr_zenith(self):
         '''Get the zenith angle for asr (according to choosed asr fiqh)'''
-        delta = self.__sunDeclination()
-        x = (dsin(self.__conf.latitude) * dsin(delta)
-             + dcos(self.__conf.latitude) * dcos(delta))
+        delta = self._sun_declination()
+        x = (dsin(self._conf.latitude) * dsin(delta)
+             + dcos(self._conf.latitude) * dcos(delta))
         a = atan(x / sqrt(-x * x + 1))
-        x = self.__conf.asrMadhab + (1 / tan(a))
+        x = self._conf.asr_madhab + (1 / tan(a))
         return 90 - (180 / pi) * (atan(x) + 2 * atan(1))
 
-    def __sunDeclination(self):
+    def _sun_declination(self):
         '''Get sun declination'''
-        n = gregorianToJulianDay(self.__date) - 2451544.5
+        n = gregorian_to_julian(self._date) - 2451544.5
         epsilon = 23.44 - 0.0000004 * n
         l = 280.466 + 0.9856474 * n
         g = 357.528 + 0.9856003 * n
         lamda = l + 1.915 * dsin(g) + 0.02 * dsin(2 * g)
         x = dsin(epsilon) * dsin(lamda)
         return (180 / (4 * atan(1))) * atan(x / sqrt(-x * x + 1))
+        # jd = gregorian_to_julian(self._date)
+        # d = jd - 2451545.0
 
-    def __dohrTime(self):
+        # g = 357.529 + 0.98560028* d
+        # q = 280.459 + 0.98564736* d
+        # L = q + 1.915* dsin(g) + 0.020* dsin(2*g)
+
+        # R = 1.00014 - 0.01671* dcos(g) - 0.00014* dcos(2*g)
+        # e = 23.439 - 0.00000036* d
+        # RA = atan2(dcos(e)* dsin(L), dcos(L))/ 15
+
+        # D = asin(dsin(e)* dsin(L))# declination of the Sun
+        # EqT = q/15.0 - RA# equation of time
+        # return D
+    def _dohr_time(self):
         '''# Dohr time for internal use, return number of hours,
         not time object'''
-        ld = self.__conf.longitudeDifference
-        time_eq = self.__equationOfTime()
+        ld = self._conf.longitude_difference
+        time_eq = self._equation_of_time()
         duhr_t = 12 + ld + time_eq / 60
         return duhr_t
 
-    def __prayerTime(self, zenith):
+    def _time(self, zenith):
         '''Get Times for "Fajr, Sherook, Asr, Maghreb, ishaa"'''
-        delta = self.__sunDeclination()
+        delta = self._sun_declination()
         s = ((dcos(zenith)
-              - dsin(self.__conf.latitude) * dsin(delta))
-             / (dcos(self.__conf.latitude) * dcos(delta)))
+              - dsin(self._conf.latitude) * dsin(delta))
+             / (dcos(self._conf.latitude) * dcos(delta)))
         return (180 / pi * (atan(-s / sqrt(-s * s + 1)) + pi / 2)) / 15
 
-    def __hoursToTime(val, shift, summer_time):
+    def _hours_to_time(val, shift, summer_time):
         '''Convert a decimal value (in hours) to time object'''
         if not (isinstance(shift, float) or isinstance(shift, int)):
             raise Exception("'shift' value must be an 'int' or 'float'")
 
-        if summer_time:
-            st = 1
-        else:
-            st = 0
+        st = 1 if summer_time else 0
 
         hours = val + shift/3600
         minutes = (hours - floor(hours)) * 60
         seconds = (minutes - floor(minutes)) * 60
         return time((floor(hours) + st), floor(minutes), floor(seconds))
 
-    def fajrTime(self, shift=0.0):
+    def fajr_time(self, shift=0.0):
         '''Get the Fajr time'''
-        return (Prayer._Prayer__hoursToTime
-                (self.__dohrTime() - self.__prayerTime(self.__conf.fajrZenith),
-                 shift, self.__conf.summerTime))
+        return (Prayer._hours_to_time
+                (self._dohr_time() - self._time(self._conf.fajr_zenith),
+                 shift, self._conf.summer_time))
 
-    def sherookTime(self, shift=0.0):
+    def sherook_time(self, shift=0.0):
         '''Get the Sunrise (Sherook) time'''
-        return (Prayer._Prayer__hoursToTime
-                (self.__dohrTime()
-                 - self.__prayerTime(self.__conf.sherookZenith),
-                 shift, self.__conf.summerTime))
+        return (Prayer._hours_to_time
+                (self._dohr_time()
+                 - self._time(self._conf.sherook_zenith),
+                 shift, self._conf.summer_time))
 
-    def dohrTime(self, shift=0.0):
-        return Prayer._Prayer__hoursToTime(self.__dohrTime(),
-                                           shift, self.__conf.summerTime)
+    def dohr_time(self, shift=0.0):
+        return Prayer._hours_to_time(self._dohr_time(),
+                                           shift, self._conf.summer_time)
 
-    def asrTime(self, shift=0.0):
+    def asr_time(self, shift=0.0):
         '''Get the Asr time'''
-        return (Prayer._Prayer__hoursToTime
-                (self.__dohrTime() + self.__prayerTime(self.__asrZenith()),
-                 shift, self.__conf.summerTime))
+        return (Prayer._hours_to_time
+                (self._dohr_time() + self._time(self._asr_zenith()),
+                 shift, self._conf.summer_time))
 
-    def maghrebTime(self, shift=0.0):
+    def maghreb_time(self, shift=0.0):
         '''Get the Maghreb time'''
-        return (Prayer._Prayer__hoursToTime
-                (self.__dohrTime() + self.__prayerTime
-                 (self.__conf.maghrebZenith), shift, self.__conf.summerTime))
+        return (Prayer._hours_to_time
+                (self._dohr_time() + self._time
+                 (self._conf.maghreb_zenith), shift, self._conf.summer_time))
 
-    def ishaaTime(self, shift=0.0):
+    def ishaa_time(self, shift=0.0):
         '''Get the Ishaa time'''
-        if (self.__conf.ishaaZenith is None):
-            # ishaaZenith==None <=> method == Umm al-Qura University, Makkah
-            if HijriDate.getHijri(self.__date,
-                                  self.__correction_val).month == 9:
-                ishaa_t = self.__dohrTime()
-                + self.__prayerTime(self.__conf.maghrebZenith) + 2.0
+        if (self._conf.ishaa_zenith is None):
+            # ishaa_zenith==None <=> method == Umm al-Qura University, Makkah
+            if HijriDate.get_hijri(self._date,
+                                  self._correction_val).month == 9:
+                ishaa_t = self._dohr_time()
+                + self._time(self._conf.maghreb_zenith) + 2.0
             else:
-                ishaa_t = self.__dohrTime()
-                + self.__prayerTime(self.__conf.maghrebZenith) + 1.5
+                ishaa_t = self._dohr_time()
+                + self._time(self._conf.maghreb_zenith) + 1.5
         else:
-            ishaa_t = self.__prayerTime(self.__conf.ishaaZenith)
-            ishaa_t = self.__dohrTime() + ishaa_t
-        return Prayer._Prayer__hoursToTime(ishaa_t, shift,
-                                           self.__conf.summerTime)
+            ishaa_t = self._time(self._conf.ishaa_zenith)
+            ishaa_t = self._dohr_time() + ishaa_t
+        return Prayer._hours_to_time(ishaa_t, shift,
+                                           self._conf.summer_time)
+

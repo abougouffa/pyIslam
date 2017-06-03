@@ -50,7 +50,7 @@ else:
 pconf = PrayerConf(longitude, latitude, timezone, fajr_isha_method, asr_fiqh)
 
 pt = Prayer(pconf, date.today())
-hijri = HijriDate.today(1)
+hijri = HijriDate.today()
 
 print('Longitude:\n\t', longitude)
 print('Latitude:\n\t', latitude)
@@ -65,12 +65,12 @@ print('Timezone:\n\t', tz(timezone))
 print('Fajr and Ishaa reference:\n\t', fi[fajr_isha_method - 1])
 print('Asr madhab:\n\t', ar[asr_fiqh - 1])
 print('\nPrayer times for: ' + hijri.format(2) + ' '
-      + str(hijri.toGregorian()))
-print('Fajr:    ' + str(pt.fajrTime()))
-print('Sherook: ' + str(pt.sherookTime()))
-print('Dohr:    ' + str(pt.dohrTime()))
-print('Asr:     ' + str(pt.asrTime()))
-print('Maghreb: ' + str(pt.maghrebTime()))
-print('Ishaa:   ' + str(pt.ishaaTime()))
+      + str(hijri.to_gregorian()))
+print('Fajr:    ' + str(pt.fajr_time()))
+print('Sherook: ' + str(pt.sherook_time()))
+print('Dohr:    ' + str(pt.dohr_time()))
+print('Asr:     ' + str(pt.asr_time()))
+print('Maghreb: ' + str(pt.maghreb_time()))
+print('Ishaa:   ' + str(pt.ishaa_time()))
 
 print('Qiblah direction from the north: ' + Qiblah(pconf).sixty())
