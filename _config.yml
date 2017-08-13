@@ -1,0 +1,8 @@
+title: pyIslam
+description: pyIslam, a Python library to calculate prayer times, hijri date, qiblah direction and more
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-architect
+
+gems:
+  - jekyll-mentions
