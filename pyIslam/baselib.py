@@ -36,7 +36,7 @@ def gregorian_to_julian(dat):  # Julian Day
     a = floor(year / 100)
     b = 0
 
-    if year > 1582 or (year == 1582 and month > 10) or (month == 10 and day > 15):
+    if year > 1582 or (year == 1582 and (month > 10 or (month == 10 and day > 15))):
         # If it is a gregorian calendar set b
         b = 2 - a + floor(a / 4)
 
