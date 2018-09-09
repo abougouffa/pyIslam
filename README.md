@@ -25,6 +25,7 @@ Actually, the library can does:
 <div dir='rtl'>
 حاليا، المكتبة تستطيع أن تقوم بـ:
 </div>
+
 - [x] <span dir='rtl'>حساب مواقيت الصلاة</span>
 - [x] <span dir='rtl'>التحويل بين التاريخ الهجري والميلادي</span>
 - [x] <span dir='rtl'>تحديد اتجاه القبلة</span>
