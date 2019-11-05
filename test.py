@@ -5,6 +5,9 @@ from pyIslam.praytimes import PrayerConf, Prayer
 from pyIslam.hijri import HijriDate
 from pyIslam.qiblah import Qiblah
 from datetime import date
+from pyIslam.mirath import Mirath
+from pyIslam.zakat import Zakat
+
 
 
 # Latitude = 36.716667
@@ -74,3 +77,25 @@ print('Maghreb: ' + str(pt.maghreb_time()))
 print('Ishaa:   ' + str(pt.ishaa_time()))
 
 print('Qiblah direction from the north: ' + Qiblah(pconf).sixty())
+
+print('\n---testing zakat---\n')
+
+z = Zakat()
+print(str(z.calculate_zakat(10000)) + ' $')
+print(str(z.calculate_zakat_harvest(10000)) + ' Kg')
+print(str(z.calculate_zakat_harvest(10000,'natural', 'other')) + ' Kg')
+
+print('\n---testing mirath---\n')
+
+test = Mirath()
+test.add_relative('wife')
+test.add_relative('father')
+test.add_relative('maternal_grandmother')
+test.add_relative('mother')
+test.add_relative('paternal_grandmother')
+test.add_relative('sister')
+test.add_relative('brother')
+test.add_relative('maternal_brother', 3)
+test.add_relative('son')
+test.calculte_mirath()
+test.display_shares()
