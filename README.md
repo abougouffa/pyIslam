@@ -9,8 +9,12 @@ Actually, the library can does:
 - [x] Pray times calculation
 - [x] Hijri/Gregorian date conversion
 - [x] Qibla direction
-- [ ] Zakat calculation
-- [ ] Mirath calculation
+- [x] Zakat calculation (need checking)
+- [x] Mirath calculation (need checking)
+
+# Authors
+- Abdelhak Bougouffa [@abougouffa](https://github.com/abougouffa)
+- Monsef Alahem [@monsef-alahem](https://github.com/monsef-alahem)
 
 ------
 <div dir='rtl'>
