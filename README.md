@@ -12,6 +12,16 @@ Actually, the library can does:
 - [x] Zakat calculation **(need checking)**
 - [x] Mirath calculation **(need checking)**
 
+# Installing
+## From PyPi
+Simply run:
+
+```bash
+pip install islam
+```
+
+**Note that the `pip` package name is `islam` and not `pyIslam`, `pyIslam` is taken by another project on PyPi.**
+
 # Author
 - Abdelhak Bougouffa [@abougouffa](https://github.com/abougouffa)
 
