@@ -16,7 +16,7 @@ setup(
     version=version,
     description=" a library to calculate prayer times, hijri date, qiblah direction and more",
     long_description=readme,
-    long_description_content_type="text/x-rst",
+    long_description_content_type="text/markdown",
     url="https://github.com/abougouffa/pyIslam",
     author="abougouffa",
     author_email="abougouffa@fedoraproject.org",
@@ -24,7 +24,7 @@ setup(
     classifiers=[
         "Intended Audience :: Developers",
         "Topic :: Utilities",
-        "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+        "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
         "Natural Language :: English",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
