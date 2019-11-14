@@ -12,9 +12,12 @@ Actually, the library can does:
 - [x] Zakat calculation **(need checking)**
 - [x] Mirath calculation **(need checking)**
 
-# Authors
+# Author
 - Abdelhak Bougouffa [@abougouffa](https://github.com/abougouffa)
+
+# Contributors
 - Monsef Alahem [@monsef-alahem](https://github.com/monsef-alahem)
+- Azzam S. A. [@azzamsa](https://github.com/azzamsa)
 
 ------
 <div dir='rtl'>
