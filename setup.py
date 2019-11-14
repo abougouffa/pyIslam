@@ -12,9 +12,9 @@ with open("README.md", "rb") as f:
     readme = f.read().decode("utf-8")
 
 setup(
-    name="pyIslam",
+    name="islam",
     version=version,
-    description=" a library to calculate prayer times, hijri date, qiblah direction and more",
+    description="a library to calculate prayer times, hijri date, qiblah direction and more",
     long_description=readme,
     long_description_content_type="text/markdown",
     url="https://github.com/abougouffa/pyIslam",
