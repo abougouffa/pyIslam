@@ -1,6 +1,6 @@
 pyIslam
 ===========
-[![Build Status](https://travis-ci.org/abougouffa/pyIslam.svg?branch=master)](https://travis-ci.org/a-bougouffa/pyIslam)
+[![Build Status](https://travis-ci.org/abougouffa/pyIslam.svg?branch=master)](https://travis-ci.org/abougouffa/pyIslam)
 
 **_pyIslam_** is a python islamic library, it will be able (when completed) to calculate **prayer times**, **qibla** direction, convert between gregorian and **hijri**, calculate **zakat** and **mirath**.
 
@@ -33,5 +33,5 @@ Actually, the library can does:
 - [x] <span dir='rtl'>حساب مواقيت الصلاة</span>
 - [x] <span dir='rtl'>التحويل بين التاريخ الهجري والميلادي</span>
 - [x] <span dir='rtl'>تحديد اتجاه القبلة</span>
-- [ ] <span dir='rtl'>حساب الزكاة</span>
-- [ ] <span dir='rtl'>حساب الميراث</span>
+- [x] <span dir='rtl'>حساب الزكاة</span>
+- [x] <span dir='rtl'>حساب الميراث</span>
