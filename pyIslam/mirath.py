@@ -40,6 +40,8 @@ def get_list_index(liste, element):
 
 class Mirath():
 
+    log = ""
+
     #the only way i know to initialise empty list of variables of specifique type
     relative_list = [' ']
     relative_list.pop()
@@ -54,10 +56,12 @@ class Mirath():
     
     def display_shares(self):
         print('')
+        self.log += '\n'
         print('current results :')
+        self.log += 'current results :\n'
         for i in range (len(self.result_list)):
             print(str(self.relative_list[i]) + ' -> ' + str(self.result_list[i]))
-
+            self.log += (str(self.relative_list[i]) + ' -> ' + str(self.result_list[i]) + '\n')
     def calculte_mirath(self):
         offspring = ['son', 'daughter','grandson']
         male_offspring = ['son','grandson']
@@ -91,7 +95,7 @@ class Mirath():
                         self.result_list.append(Fraction('1/2'))
 
             if case == 'father':
-                if self._exist(offspring):
+                if self._exist(['son','grandson']):
                     self.result_list.append(Fraction('1/6'))
                 else:
                     self.result_list.append(Fraction('-1/1'))
@@ -103,14 +107,16 @@ class Mirath():
                     self.result_list.append(Fraction('1/3'))
 
             if case == 'grandson':
-                if self._exist(['son', 'daughter','father']):
+                if self._exist(['son', 'daughter']):
                     self.result_list.append(Fraction('0/3'))
                 else:
                     self.result_list.append(Fraction('-1/1'))
 
             if case == 'granddaughter':
-                if self._exist(['son','father','grandson',]):
+                if self._exist(['son']):
                     self.result_list.append(Fraction('0/1'))
+                elif self._exist(['grandson']):
+                    self.result_list.append(Fraction('-2/1'))
                 else:
                     if self.count_list[i] > 1:
                         self.result_list.append(Fraction('2/3'))
@@ -118,8 +124,10 @@ class Mirath():
                         self.result_list.append(Fraction('1/2'))
 
             if case == 'grandfather':
-                if not self._exist(['father']) and self._exist(offspring):
+                if not self._exist(['father']) and self._exist(['son','grandson']):
                     self.result_list.append(Fraction('1/6'))
+                elif not self._exist(['father']):
+                    self.result_list.append(Fraction('-1/1'))
                 else:
                     self.result_list.append(Fraction('0/1'))
 
@@ -293,18 +301,26 @@ class Mirath():
             if self.result_list[i] > 0:
                 total += self.result_list[i]
                 print(str(self.relative_list[i]) + ' take ' + str(self.result_list[i]))
+                self.log += (str(self.relative_list[i]) + ' take ' + str(self.result_list[i]) + '\n')
 
         #2-distribuate remains if there is
         isbam = get_list_index(self.result_list, -1)
         isbaf = get_list_index(self.result_list, -2)
         if isbam != -1 and isbaf != -1:
-            self.result_list[isbam] = (Fraction('1/1') - total) * Fraction('2/3')
-            self.result_list[isbaf] = (Fraction('1/1') - total) * Fraction('1/3')
+            male = self.count_list[isbam]
+            female = self.count_list[isbaf]
+            shares = male * 2 + female
+            self.result_list[isbam] = (Fraction('1/1') - total) * Fraction(male*2, shares)
+            self.result_list[isbaf] = (Fraction('1/1') - total) * Fraction(female, shares)      
+            # self.result_list[isbam] = (Fraction('1/1') - total) * Fraction('2/3') * count_list[isbam]
+            # self.result_list[isbaf] = (Fraction('1/1') - total) * Fraction('1/3') * count_list[isbam]       
             print(str(self.relative_list[isbam]) + ' and ' + str(self.relative_list[isbaf]) + ' take the remain')
+            self.log += (str(self.relative_list[isbam]) + ' and ' + str(self.relative_list[isbaf]) + ' take the remain' + '\n')
             return
         if isbam != -1 and isbaf == -1:
             self.result_list[isbam] = Fraction('1/1') - total
             print(str(self.relative_list[isbam]) + ' take remain')
+            self.log += (str(self.relative_list[isbam]) + ' take remain' + '\n')
             return
 
 
@@ -313,12 +329,15 @@ class Mirath():
         num = total.denominator
         if total != 1:
             print('correting total')
+            self.log += ('correting total' + '\n')
             total = Fraction(0, 1)
             for i in range (len(self.result_list)):
                 self.result_list[i] *= Fraction(num, den)
                 total += self.result_list[i]
                 print(str(self.relative_list[i]) + ' take ' + str(self.result_list[i]))
+                self.log += (str(self.relative_list[i]) + ' take ' + str(self.result_list[i]) + '\n')
         print('total corrected = ' + str(total))
+        self.log += ('total corrected = ' + str(total) + '\n')
 
     def _exist(self, liste):
         for i in range(len(self.relative_list)):
