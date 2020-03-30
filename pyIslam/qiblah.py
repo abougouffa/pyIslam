@@ -15,23 +15,22 @@ class Qiblah:
                  - dcos(MAKKAH_LATI) * dsin(self._conf.latitude)
                  * dcos(lamda))
         self._qiblah_dir = (180 / pi) * atan(num / denom)
-        if num > 0 and denom < 0:
+        
+        # Needs a check!
+        if denom < 0:
             self._qiblah_dir = 180 + self._qiblah_dir
-        if num < 0 and denom < 0:
-            self._qiblah_dir = 180 + self._qiblah_dir
-        if num < 0 and denom > 0:
+        if denom > 0 and num < 0:
             self._qiblah_dir = 360 + self._qiblah_dir
 
     def direction(self):
         '''Get the direction from the north of the qiblah (in degrees)'''
         return self._qiblah_dir
 
-    def sixty(self):  # Convert an angle from self._qiblah_dirree to sixty
+    def sixty(self):  # Convert the angle from degrees to sixty
         six = str(int(self._qiblah_dir)) + '°'
         self._qiblah_dir = (self._qiblah_dir - int(self._qiblah_dir)) * 60
         six = six + " " + str(int(self._qiblah_dir)) + "'"
         self._qiblah_dir = (self._qiblah_dir - int(self._qiblah_dir)) * 60
-
         six = six + " " + str(int(self._qiblah_dir)) + "''"
         self._qiblah_dir = (self._qiblah_dir - int(self._qiblah_dir)) * 60
         return six
