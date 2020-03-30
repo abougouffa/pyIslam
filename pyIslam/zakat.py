@@ -10,36 +10,23 @@ O=============================================================================O
 O=============================================================================O
 '''
 class Zakat():
-
-    def calculate_zakat(self, amount) :
+    def calculate_zakat(self, amount, nisab=4000) :
         #minimal amount is 4000 dollars approximatively this days
-        nisab = 4000 
-        if amount <= nisab:
+        if amount < nisab: # ( < or <= ?! )
             return 0
-        result = amount / 10 / 4
-        return result   
+        return amount * 0.025 # (4th of 10th)   
 
-    def calculate_zakat_harvest(self, weight, irrigationType = 'artificial', method = 'hanafi') :
+    def calculate_zakat_harvest(self, weight, irrigationType='artificial', method='hanafi') :
         #minimal weight in kilogramme
-        nisab = 975
-        if method == 'hanafi' :
-            nisab =  975
-        elif method == 'other' :
-            nisab = 612
-        else :
-            print('invalid methode')
-            return
-            
+        nisab = 975 if method == 'hanafi' else 612
+
         if weight <= nisab:
             return 0
 
         if irrigationType == 'artificial':
-            result = weight / 20
-            return result   
+            return weight * 0.05
         elif irrigationType == 'natural':
-            result = weight / 10
-            return result   
-        else :
-            print('invalid type of irrigation')
-            return
-
+            return weight * 0.1
+        else:
+            raise ValueError("Invalid type of irrigation, it can be one of ['natural', 'artificial']")
+            
