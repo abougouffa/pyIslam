@@ -74,20 +74,6 @@ class Prayer:
              + 0.053 * dsin(4 * lamda)
              + 0.0014 * dsin(6 * lamda))
         return (c + r) * 4
-        # jd = gregorian_to_julian(self._date)
-        # d = jd - 2451545.0
-
-        # g = 357.529 + 0.98560028* d
-        # q = 280.459 + 0.98564736* d
-        # L = q + 1.915* dsin(g) + 0.020* dsin(2*g)
-
-        # R = 1.00014 - 0.01671* dcos(g) - 0.00014* dcos(2*g)
-        # e = 23.439 - 0.00000036* d
-        # RA = atan2(dcos(e)* dsin(L), dcos(L))/ 15
-
-        # D = asin(dsin(e)* dsin(L))# declination of the Sun
-        # EqT = q/15.0 - RA# equation of time
-        # return EqT
 
     def _asr_zenith(self):
         '''Get the zenith angle for asr (according to choosed asr fiqh)'''
@@ -107,20 +93,7 @@ class Prayer:
         lamda = l + 1.915 * dsin(g) + 0.02 * dsin(2 * g)
         x = dsin(epsilon) * dsin(lamda)
         return (180 / (4 * atan(1))) * atan(x / sqrt(-x * x + 1))
-        # jd = gregorian_to_julian(self._date)
-        # d = jd - 2451545.0
 
-        # g = 357.529 + 0.98560028* d
-        # q = 280.459 + 0.98564736* d
-        # L = q + 1.915* dsin(g) + 0.020* dsin(2*g)
-
-        # R = 1.00014 - 0.01671* dcos(g) - 0.00014* dcos(2*g)
-        # e = 23.439 - 0.00000036* d
-        # RA = atan2(dcos(e)* dsin(L), dcos(L))/ 15
-
-        # D = asin(dsin(e)* dsin(L))# declination of the Sun
-        # EqT = q/15.0 - RA# equation of time
-        # return D
     def _dohr_time(self):
         '''# Dohr time for internal use, return number of hours,
         not time object'''
