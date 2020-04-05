@@ -31,7 +31,14 @@ O=============================================================================O
 '''
 from fractions import Fraction
 
-def get_list_index(liste, element):
+'''
+global function
+tell the index of given element in given list
+return the index of element in list
+return -1 if the list don't contain the element
+'''
+
+def get_element_index(liste, element):
     for i in range(len(liste)):
         if liste[i] == element:
             return i
@@ -40,23 +47,33 @@ def get_list_index(liste, element):
 
 class Mirath():
 
-    log = ""
-    relative_list = []
-    count_list = []
-    result_list = []
+    def __init__(self, name= "new case"):
+        self.relative_list = []
+        self.count_list = []
+        self.result_list = []
+        self.log = []
+        self.name = name
 
-    def print_log(slef, text, with_log=Ture):
-        self.log += text + '\n'
-        print(text)
+    def _append_to_log(self, text):
+        self.log.append(str(text + '\n'))
+        #print(text)
+    def display_log(self):
+        log = self.log
+        print('\n++++++++++++++++++++++ ' + self.name + ' ++++++++++++++++++++++++++++\n')
+        for line in log :
+            line = line[:-1]
+            print(line)
+        print('\n+++++++++++++++++++++++ end +++++++++++++++++++++++++++++\n')
+
     
     def add_relative(self, relative, count = 1):
         self.relative_list.append(relative)
         self.count_list.append(count)
     
-    def display_shares(self):
-        self.print_log('current results :')
-        for i in range(len(self.result_list)):
-            self.print_log(str(self.relative_list[i]) + ' -> ' + str(self.result_list[i]))
+    # def display_shares(self):
+    #   self._append_to_log('current results :')
+    #   for i in range(len(self.result_list)):
+    #       self._append_to_log(str(self.relative_list[i]) + ' -> ' + str(self.result_list[i]))
     
     def calculte_mirath(self):
         offspring = ['son', 'daughter', 'grandson']
@@ -290,30 +307,35 @@ class Mirath():
 
         self._correct_ratio()
 
+        #fill log with final results
+        self._append_to_log('current results :')
+        for i in range(len(self.result_list)):
+            self._append_to_log(str(self.relative_list[i]) + ' -> ' + str(self.result_list[i]))
+
     def _correct_ratio(self):
         #1-calcute total
         total = Fraction('0/1')
         for i in range (len(self.result_list)):
             if self.result_list[i] > 0:
                 total += self.result_list[i]
-                self.print_log(str(self.relative_list[i]) + ' take ' + str(self.result_list[i]))
+#self._append_to_log(str(self.relative_list[i]) + ' take ' + str(self.result_list[i]))
 
         #2-distribuate remains if there is
-        isbam = get_list_index(self.result_list, -1)
-        isbaf = get_list_index(self.result_list, -2)
-        if isbam != -1 and isbaf != -1:
-            male = self.count_list[isbam]
-            female = self.count_list[isbaf]
+        #aasba male
+        aasba_m = get_element_index(self.result_list, -1)
+        #aasba female
+        aasba_f = get_element_index(self.result_list, -2)
+        if aasba_m != -1 and aasba_f != -1:
+            male = self.count_list[aasba_m]
+            female = self.count_list[aasba_f]
             shares = male * 2 + female
-            self.result_list[isbam] = (Fraction('1/1') - total) * Fraction(male*2, shares)
-            self.result_list[isbaf] = (Fraction('1/1') - total) * Fraction(female, shares)      
-            # self.result_list[isbam] = (Fraction('1/1') - total) * Fraction('2/3') * count_list[isbam]
-            # self.result_list[isbaf] = (Fraction('1/1') - total) * Fraction('1/3') * count_list[isbam]       
-            self.print_log(str(self.relative_list[isbam]) + ' and ' + str(self.relative_list[isbaf]) + ' take the remain')
+            self.result_list[aasba_m] = (Fraction('1/1') - total) * Fraction(male*2, shares)
+            self.result_list[aasba_f] = (Fraction('1/1') - total) * Fraction(female, shares)         
+            #self._append_to_log(str(self.relative_list[aasba_m]) + ' and ' + str(self.relative_list[aasba_f]) + ' take the remain')
             return
-        if isbam != -1 and isbaf == -1:
-            self.result_list[isbam] = Fraction('1/1') - total
-            self.print_log(str(self.relative_list[isbam]) + ' take remain')
+        if aasba_m != -1 and aasba_f == -1:
+            self.result_list[aasba_m] = Fraction('1/1') - total
+            #self._append_to_log(str(self.relative_list[aasba_m]) + ' take remain')
             return
 
 
@@ -321,13 +343,13 @@ class Mirath():
         den = total.numerator
         num = total.denominator
         if total != 1:
-            self.print_log('correting total')
+            #self._append_to_log('correting total')
             total = Fraction(0, 1)
             for i in range (len(self.result_list)):
                 self.result_list[i] *= Fraction(num, den)
                 total += self.result_list[i]
-                self.print_log(str(self.relative_list[i]) + ' take ' + str(self.result_list[i]))
-        self.print_log('total corrected = ' + str(total))
+                #self._append_to_log(str(self.relative_list[i]) + ' take ' + str(self.result_list[i]))
+        #self._append_to_log('total corrected = ' + str(total))
 
     def _exist(self, liste):
         for i in range(len(self.relative_list)):
@@ -351,4 +373,3 @@ class Mirath():
             if l == 'maternal_brother' or l == 'maternal_sister':
                 counter += self.count_list[i]
         return counter
-
