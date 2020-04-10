@@ -329,7 +329,7 @@ class Mirath():
 		for i in range (len(self.result_list)):
 			if self.result_list[i] > 0:
 				total += self.result_list[i]
-#self._append_to_log(str(self.relative_list[i]) + ' take ' + str(self.result_list[i]))
+				self._append_to_log(str(self.relative_list[i]) + ' take ' + str(self.result_list[i]))
 
 		#2-distribuate remains if there is
 		#aasba male
@@ -342,11 +342,24 @@ class Mirath():
 			shares = male * 2 + female
 			self.result_list[aasba_m] = (Fraction('1/1') - total) * Fraction(male*2, shares)
 			self.result_list[aasba_f] = (Fraction('1/1') - total) * Fraction(female, shares)         
-			#self._append_to_log(str(self.relative_list[aasba_m]) + ' and ' + str(self.relative_list[aasba_f]) + ' take the remain')
+			self._append_to_log(str(self.relative_list[aasba_m]) + ' and ' + str(self.relative_list[aasba_f]) + ' take the remain')
 			return
 		if aasba_m != -1 and aasba_f == -1:
 			self.result_list[aasba_m] = Fraction('1/1') - total
-			#self._append_to_log(str(self.relative_list[aasba_m]) + ' take remain')
+			self._append_to_log(str(self.relative_list[aasba_m]) + ' take remain')
+			
+			#maternal sibling can't  have more than other sibling
+			f_brother = get_element_index(self.relative_list, "brother")
+			p_brother = get_element_index(self.relative_list, "paternal_brother")
+			m_brother = get_element_index(self.relative_list, "maternal_brother")
+			if (f_brother != -1 or p_brother != -1) and m_brother != -1:
+				o_brother = f_brother
+				if f_brother == -1:
+					o_brother = p_brother
+				if self.result_list[m_brother] > self.result_list[o_brother]:
+					total = self.result_list[m_brother] + self.result_list[o_brother]
+					self.result_list[o_brother] = total / 2
+					self.result_list[m_brother] = total / 2
 			return
 
 
@@ -354,13 +367,13 @@ class Mirath():
 		den = total.numerator
 		num = total.denominator
 		if total != 1:
-			#self._append_to_log('correting total')
+			self._append_to_log('correting total')
 			total = Fraction(0, 1)
 			for i in range (len(self.result_list)):
 				self.result_list[i] *= Fraction(num, den)
 				total += self.result_list[i]
 				#self._append_to_log(str(self.relative_list[i]) + ' take ' + str(self.result_list[i]))
-		#self._append_to_log('total corrected = ' + str(total))
+		self._append_to_log('total corrected = ' + str(total))
 
 	def _exist(self, liste):
 		for i in range(len(self.relative_list)):
