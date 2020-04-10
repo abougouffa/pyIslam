@@ -141,6 +141,12 @@ class Mirath():
 					self.result_list.append(Fraction('0/1'))
 				elif self._exist(['grandson']):
 					self.result_list.append(Fraction('-2/1'))
+				elif self._exist(['daughter']) and not self._exist(['grandson', 'son']):
+					daughter_idx = get_element_index(self.relative_list, 'daughter')
+					if self.count_list[daughter_idx] == 1:
+						self.result_list.append(Fraction('1/6'))
+					else:
+						self.result_list.append(Fraction('0/1'))
 				else:
 					if self.count_list[i] > 1:
 						self.result_list.append(Fraction('2/3'))
@@ -373,7 +379,7 @@ class Mirath():
 				self.result_list[i] *= Fraction(num, den)
 				total += self.result_list[i]
 				#self._append_to_log(str(self.relative_list[i]) + ' take ' + str(self.result_list[i]))
-		self._append_to_log('total corrected = ' + str(total))
+			self._append_to_log('total corrected = ' + str(total))
 
 	def _exist(self, liste):
 		for i in range(len(self.relative_list)):
