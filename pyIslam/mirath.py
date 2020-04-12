@@ -78,6 +78,7 @@ class Mirath():
 	
 	def calculte_mirath(self):
 		offspring = ['son', 'daughter', 'grandson']
+		males = ['son', 'grandson', 'father', 'grandfather', 'paternal_brother', 'maternal_brother', 'brother', 'uncle', 'cousin', 'paternal_uncle', 'paternal_cousin']
 		male_offspring = ['son', 'grandson']
 		sibling = ['brother', 'sister', 'paternal_brother', 'paternal_sister', 'maternal_brother', 'maternal_sister']
 		sibling_offspring = ['brother', 'sister', 'grandson', 'grandson']
@@ -188,6 +189,9 @@ class Mirath():
 					self.result_list.append(Fraction('0/1'))
 				elif self._exist(['brother']):
 					self.result_list.append(Fraction('-2/1'))
+				elif ( self._exist(['daughter']) or self._exist(['wife']) )\
+				and not self._exist(males):
+					self.result_list.append(Fraction('-1/1'))
 				else:
 					if self.count_list[i] > 1:
 						self.result_list.append(Fraction('2/3'))
