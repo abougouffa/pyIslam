@@ -191,13 +191,13 @@ class Mirath():
                     self.result_list.append(Fraction('0/1'))
 
             if case == 'brother':
-                if self._exist(['son', 'father']):
+                if self._exist(male_offspring) or self._exist(male_ancestor):
                     self.result_list.append(Fraction('0/1'))
                 else:
                     self.result_list.append(Fraction('-1/1'))
             
             if case == 'sister':
-                if self._exist(['son', 'father']):
+                if self._exist(male_offspring) or self._exist(male_ancestor):
                     self.result_list.append(Fraction('0/1'))
                 elif self._exist(['father', 'son', 'brother', 'uncle']):
                     self.result_list.append(Fraction('-2/1'))
@@ -211,14 +211,14 @@ class Mirath():
                         self.result_list.append(Fraction('1/2'))
 
             if case == 'paternal_brother':
-                if (not self._exist(['brother','father'])) and (not self._exist(offspring)):
+                if (not self._exist(['brother','father'])) and (not self._exist(male_offspring)):
                     self.result_list.append(Fraction('-1/1'))
                 else:
                     self.result_list.append(Fraction('0/2'))
 
 
             if case == 'paternal_sister':
-                if not self._exist(['brother', 'grandfather']) and not self._exist(offspring): 
+                if not self._exist(['brother', 'grandfather']) and not self._exist(male_offspring): 
                     if self._exist(['sister']) and not self._exist(['paternal_brother']):
                         j = get_element_index(self.relative_list, 'sister')
                         if self.count_list[j] == 1:
@@ -246,35 +246,35 @@ class Mirath():
                         self.result_list.append(Fraction('1/6'))
 
             if case == 'nephew':
-                if self._exist(offspring) or self._exist(['brother', 'father', 'grandfather',\
+                if self._exist(male_offspring) or self._exist(['brother', 'father', 'grandfather',\
                     'paternal_brother', 'maternal_brother']):
                     self.result_list.append(Fraction('0/1'))
                 else:
                     self.result_list.append(Fraction('-1/1'))
             
             if case == 'paternal_nephew':
-                if self._exist(offspring) or self._exist(['brother', 'father', 'grandfather',\
+                if self._exist(male_offspring) or self._exist(['brother', 'father', 'grandfather',\
                     'paternal_brother', 'maternal_brother', 'nephew']):
                     self.result_list.append(Fraction('0/1'))
                 else:
                     self.result_list.append(Fraction('-1/1'))
             
             if case == 'nephew_son':
-                if self._exist(offspring) or self._exist(['brother', 'father', 'grandfather',\
+                if self._exist(male_offspring) or self._exist(['brother', 'father', 'grandfather',\
                     'paternal_brother', 'maternal_brother', 'nephew', 'paternal_nephew']):
                     self.result_list.append(Fraction('0/1'))
                 else:
                     self.result_list.append(Fraction('-1/1'))
             
             if case == 'paternal_nephew_son':
-                if self._exist(offspring) or self._exist(['brother', 'father', 'grandfather',\
+                if self._exist(male_offspring) or self._exist(['brother', 'father', 'grandfather',\
                     'paternal_brother', 'maternal_brother', 'nephew', 'paternal_nephew', 'nephew_son']):
                     self.result_list.append(Fraction('0/1'))
                 else:
                     self.result_list.append(Fraction('-1/1'))
             
             if case == 'paternal_uncle':
-                if self._exist(offspring) or self._exist(['brother', 'father', 'grandfather',\
+                if self._exist(male_offspring) or self._exist(['brother', 'father', 'grandfather',\
                     'paternal_brother', 'maternal_brother', 'nephew', 'paternal_nephew', 'nephew_son',\
                     'paternal_nephew_son']):
                     self.result_list.append(Fraction('0/1'))
@@ -282,7 +282,7 @@ class Mirath():
                     self.result_list.append(Fraction('-1/1'))
 
             if case == 'paternal_paternal_uncle':
-                if self._exist(offspring) or self._exist(['brother','father','grandfather'\
+                if self._exist(male_offspring) or self._exist(['brother','father','grandfather'\
                     ,'paternal_brother','maternal_brother','nephew','paternal_nephew','nephew_son'\
                     ,'paternal_nephew_son','paternal_uncle']):
                     self.result_list.append(Fraction('0/1'))
@@ -290,7 +290,7 @@ class Mirath():
                     self.result_list.append(Fraction('-1/1'))
 
             if case == 'cousin':
-                if self._exist(offspring) or self._exist(['brother','father','grandfather'\
+                if self._exist(male_offspring) or self._exist(['brother','father','grandfather'\
                     ,'paternal_brother','maternal_brother','nephew','paternal_nephew','nephew_son'\
                     ,'paternal_nephew_son','paternal_uncle','paternal_paternal_uncle']):
                     self.result_list.append(Fraction('0/1'))
@@ -298,7 +298,7 @@ class Mirath():
                     self.result_list.append(Fraction('-1/1'))
 
             if case == 'paternal_cousin':
-                if self._exist(offspring) or self._exist(['brother','father','grandfather'\
+                if self._exist(male_offspring) or self._exist(['brother','father','grandfather'\
                     ,'paternal_brother','maternal_brother','nephew','paternal_nephew','nephew_son'\
                     ,'paternal_nephew_son','paternal_uncle','paternal_paternal_uncle','cousin']):
                     self.result_list.append(Fraction('0/1'))
@@ -306,7 +306,7 @@ class Mirath():
                     self.result_list.append(Fraction('-1/1'))
             
             if case == 'cousin_son':
-                if self._exist(offspring) or self._exist(['brother','father','grandfather'\
+                if self._exist(male_offspring) or self._exist(['brother','father','grandfather'\
                     ,'paternal_brother','maternal_brother','nephew','paternal_nephew','nephew_son'\
                     ,'paternal_nephew_son','paternal_uncle','paternal_paternal_uncle','cousin',\
                     'paternal_cousin']):
@@ -315,7 +315,7 @@ class Mirath():
                     self.result_list.append(Fraction('-1/1'))
 
             if case == 'paternal_cousin_son':
-                if self._exist(offspring) or self._exist(['brother','father','grandfather'\
+                if self._exist(male_offspring) or self._exist(['brother','father','grandfather'\
                     ,'paternal_brother','maternal_brother','nephew','paternal_nephew','nephew_son'\
                     ,'paternal_nephew_son','paternal_uncle','paternal_paternal_uncle','cousin'\
                     ,'paternal_cousin','cousin_son']):
@@ -324,7 +324,7 @@ class Mirath():
                     self.result_list.append(Fraction('-1/1'))
 
             if case == 'cousin_grandson':
-                if self._exist(offspring) or self._exist(['brother','father','grandfather'\
+                if self._exist(male_offspring) or self._exist(['brother','father','grandfather'\
                     ,'paternal_brother','maternal_brother','nephew','paternal_nephew','nephew_son'\
                     ,'paternal_nephew_son','paternal_uncle','paternal_paternal_uncle','cousin'\
                     ,'paternal_cousin','cousin_son','paternal_cousin_son']):
@@ -333,7 +333,7 @@ class Mirath():
                     self.result_list.append(Fraction('-1/1'))
 
             if case == 'paternal_cousin_grandson':
-                if self._exist(offspring) or self._exist(['brother','father','grandfather'\
+                if self._exist(male_offspring) or self._exist(['brother','father','grandfather'\
                     ,'paternal_brother','maternal_brother','nephew','paternal_nephew','nephew_son'\
                     ,'paternal_nephew_son','paternal_uncle','paternal_paternal_uncle','cousin'\
                     ,'paternal_cousin','cousin_son','paternal_cousin_son','cousin_grandson']):
