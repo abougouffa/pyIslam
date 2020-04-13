@@ -191,7 +191,7 @@ class Mirath():
                     self.result_list.append(Fraction('0/1'))
 
             if case == 'brother':
-                if self._exist(['son', 'daughter', 'father']):
+                if self._exist(['son', 'father']):
                     self.result_list.append(Fraction('0/1'))
                 else:
                     self.result_list.append(Fraction('-1/1'))
