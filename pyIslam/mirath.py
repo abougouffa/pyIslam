@@ -122,7 +122,7 @@ class Mirath():
                         self.result_list.append(Fraction('1/2'))
 
             if case == 'father':
-                if self._exist(['son','grandson']):
+                if self._exist(offspring):
                     self.result_list.append(Fraction('1/6'))
                 else:
                     self.result_list.append(Fraction('-1/1'))
@@ -130,7 +130,7 @@ class Mirath():
             if case == 'mother':
                 if self._exist(offspring) or self._count_sibling() > 1:
                     self.result_list.append(Fraction('1/6'))
-                elif self._exist(['father']) and not self._exist(['son','grandson']):
+                elif self._exist(['father']) and not self._exist(offspring):
                     self.result_list.append(Fraction('-2/1'))
                 else:
                     self.result_list.append(Fraction('1/3'))
@@ -167,7 +167,7 @@ class Mirath():
                         self.result_list.append(Fraction('1/2'))
 
             if case == 'grandfather':
-                if not self._exist(['father']) and self._exist(['son','grandson']):
+                if not self._exist(['father']) and self._exist(offspring):
                     self.result_list.append(Fraction('1/6'))
                 elif not self._exist(['father']):
                     self.result_list.append(Fraction('-1/1'))
@@ -201,8 +201,7 @@ class Mirath():
                     self.result_list.append(Fraction('0/1'))
                 elif self._exist(['father', 'son', 'brother', 'uncle']):
                     self.result_list.append(Fraction('-2/1'))
-                elif ( self._exist(['daughter']) or self._exist(['wife']) )\
-                and not self._exist(males):
+                elif self._exist(['daughter']) and not self._exist(males):
                     self.result_list.append(Fraction('-1/1'))
                 else:
                     if self.count_list[i] > 1:
@@ -225,8 +224,7 @@ class Mirath():
                             self.result_list.append(Fraction('1/6'))
                     elif self._exist(['paternal_brother']):
                             self.result_list.append(Fraction('-2/1'))
-					elif ( self._exist(['daughter']) or self._exist(['wife']) )\
-					and not self._exist(males):
+					elif self._exist(['daughter']) and not self._exist(males):
 						self.result_list.append(Fraction('-1/1'))									
                     else:
                         if self.count_list[i] > 1:
@@ -389,9 +387,12 @@ class Mirath():
                     self.result_list[o_brother] = total / 2
                     self.result_list[m_brother] = total / 2
             return
-
-
-
+		
+		male_offspring = ['son', 'grandson']
+		if total < 1 and self._exist(['father']) and not self._exist(male_offspring):
+			idx = get_element_index(self.relative_list, 'father')
+			self.result_list[idx] += Fraction(1,1) - total
+			return
 
         #3-equalify the shares if necesary
         sub_total = total
@@ -461,8 +462,7 @@ cases = 0
 #used by test_mirath_cases()
 def check_results(case, true_result):
     if case.result_list == true_result:
-        #print(case.name + " is correct")
-        pass
+        print(case.name + " is correct")
     else:
         #print(case.name + " is incorrect")
         print("incorrect results in " + case.name + "")
