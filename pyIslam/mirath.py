@@ -394,22 +394,28 @@ class Mirath():
         sub_total = total
         tot = Fraction(0, 1)
         if total != 1:
-            #wife and husband have fixed share
-            if self._exist(['wife']):
-                idx = get_element_index(self.relative_list, 'wife')
-                sub_total -= self.result_list[idx]
-            self._append_to_log('correting total')
-            for i in range(len(self.result_list)):
-                if self._exist(['wife']) and total < 1:
-                    if self.relative_list[i] == 'wife':
-                        pass
-                        #self.result_list[i] = Fraction(1, 8)
-                    else:
-                        idx = get_element_index(self.relative_list, 'wife')
-                        remain = Fraction(1, 1) - total
-                        self.result_list[i] *= Fraction(sub_total + remain, sub_total)
-                        #self.result_list[i] *= Fraction(sub_total + remain, sub_total)
-                        #self.result_list[i] *= Fraction(Fraction(1, 1) - self.result_list[idx], sub_total)
+            #wife and husband cannot have higher share than precripted
+            spouse = ''
+			if self._exist(['wife']):
+				spouse = 'wife'
+			elif self._exist(['husband']):
+				spouse = 'husband'
+				
+			if self._exist([spouse]):
+				idx = get_element_index(self.relative_list, spouse)
+				sub_total -= self.result_list[idx]
+			self._append_to_log('correting total')
+			for i in range(len(self.result_list)):
+				if self._exist([spouse]) and total < 1:
+					if self.relative_list[i] == spouse:
+						pass
+						#self.result_list[i] = Fraction(1, 8)
+					else:
+						idx = get_element_index(self.relative_list, spouse)
+						remain = Fraction(1, 1) - total
+						self.result_list[i] *= Fraction(sub_total + remain, sub_total)
+						#self.result_list[i] *= Fraction(sub_total + remain, sub_total)
+						#self.result_list[i] *= Fraction(Fraction(1, 1) - self.result_list[idx], sub_total)
                 else:
                     self.result_list[i] *= Fraction(total.denominator, total.numerator)
                 tot += self.result_list[i]
