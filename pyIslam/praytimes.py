@@ -6,25 +6,70 @@ from pyIslam.hijri import HijriDate
 from pyIslam.baselib import dcos, dsin, gregorian_to_julian
 from math import *
 
-fajr_isha_angles = \
-    {
-        1: (108.0, 108.0),  # 1 = University of Islamic Sciences, Karachi
-        2: (108.0, 107.0),  # 2 = Muslim World League
-        3: (109.5, 107.5),  # 3 = Egyptian General Authority of Survey
-        4: (108.5, None),  # 4 = Umm al-Qura University, Makkah
-        5: (105.0, 105.0),  # 5 = Islamic Society of North America
-        6: (102.0, 102.0),  # 6 = Union of Islamic Organizations of France
-        7: (110.0, 108.0)  # 7 = Islamic Religious Council of Signapore
-    }
 
-FAJR_ISHA_METHODS = dict(zip(fajr_isha_angles.keys(),
-                             ["University of Islamic Sciences, Karachi",
-                              "Muslim World League",
-                              "Egyptian General Authority of Survey",
-                              "Umm al-Qura University, Makkah",
-                              "Islamic Society of North America",
-                              "Union of Islamic Organizations of France",
-                              "Islamic Religious Council of Signapore"]))
+class MethodInfo:
+    def __init__(self, method_id, organizations, fajr_angle, ishaa_angle, applicability=()):
+        self._id = method_id
+        self._organizations = organizations if type(
+            organizations) in (list, tuple) else (organizations,)
+        self._fajr_angle = fajr_angle
+        self._ishaa_angle = ishaa_angle
+        self._applicability = applicability if type(
+            applicability) in (list, tuple) else (applicability,)
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def organizations(self):
+        return self._organizations
+
+    @property
+    def fajr_angle(self):
+        return self._fajr_angle
+
+    @property
+    def ishaa_angle(self):
+        return self._ishaa_angle
+
+    @property
+    def applicability(self):
+        return self._applicability
+
+
+LIST_FAJR_ISHA_METHODS = (
+    MethodInfo(1, ("University of Islamic Sciences, Karachi (UISK)",
+                   "Ministry of Religious Affaires, Tunisia",
+                   "France - Angle 18°"),
+               18.0, 18.0, ()),
+
+    MethodInfo(2, ("Muslim World League (MWL)",
+                   "Ministry of Religious Affaires and Awqaf, Algeria",
+                   "Presidency of Religious Affairs, Turkey"),
+               18.0, 17.0, ()),
+
+    MethodInfo(3, "Egyptian General Authority of Survey (EGAS)",
+               19.5, 17.5, ()),
+
+    MethodInfo(4, "Umm al-Qura University, Makkah (UMU)",
+               18.5, None, ()),
+
+    MethodInfo(5, ("Islamic Society of North America (ISNA)",
+                   "France - Angle 15°"),
+               15.0, 15.0, ()),
+
+    MethodInfo(6, "French Muslims (ex-UOIF)",
+               12.0, 12.0, ()),
+
+    MethodInfo(7, ("Islamic Religious Council of Signapore (MUIS)",
+                   "Department of Islamic Advancements of Malaysia (JAKIM)",
+                   "Ministry of Religious Affairs of Indonesia (KEMENAG)"),
+               20.0, 18.0, ()),
+
+    MethodInfo(8, "Spiritual Administration of Muslims of Russia",
+               16.0, 15.0, ())
+)
 
 
 class PrayerConf:
@@ -34,13 +79,7 @@ class PrayerConf:
         @param longitude: geographical longitude of the given location
         @param latitude: geographical latitude of the given location
         @param timezone: the time zone GMT(+/-timezone)
-        @param angle_ref: integer value for the Fajr and
-        Ishaa angle angle reference
-        1 = University of Islamic Sciences, Karachi
-        2 = Muslim World League
-        3 = Egyptian General Authority of Survey (default)
-        4 = Umm al-Qura University, Makkah
-        5 = Islamic Society of North America
+        @param angle_ref: integer value for the Fajr and Ishaa angle angle reference
         @param asr_madhab: integer value
         1 = Shafii, Maliki, Hambali (default)
         2 = Hanafi
@@ -64,11 +103,15 @@ class PrayerConf:
 
         self.summer_time = enable_summer_time
 
-        global fajr_isha_angles
+        global LIST_FAJR_ISHA_METHODS
+
+        if angle_ref > len(LIST_FAJR_ISHA_METHODS):
+            angle_ref = 3
 
         # Pythonista way to write switch-case instruction
-        (self.fajr_angle, self.ishaa_angle) = fajr_isha_angles.get(
-            angle_ref, fajr_isha_angles[3])
+        self.fajr_angle = LIST_FAJR_ISHA_METHODS[angle_ref - 1].fajr_angle + 90
+        self.ishaa_angle = LIST_FAJR_ISHA_METHODS[angle_ref -
+                                                  1].ishaa_angle + 90
 
 
 class Prayer:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from pyIslam.praytimes import PrayerConf, Prayer, FAJR_ISHA_METHODS
+from pyIslam.praytimes import PrayerConf, Prayer, LIST_FAJR_ISHA_METHODS
 from pyIslam.hijri import HijriDate
 from pyIslam.qiblah import Qiblah
 from datetime import date
@@ -12,9 +12,7 @@ from pyIslam.zakat import Zakat
 # Latitude = 36.716667
 # Longitude = 3.250000
 
-print('''Assalat Imade Eddin 0.1.1 - an islamic prayer times calculator
-Written by (Al-Fakir Ila Allah): Abdelhak Mohammed Bougouffa
-abdelhak.alg@gmail.com [or] abdelhak@cryptolab.net
+print('''Usage example of pyIslam
 -------------------------------------''')
 
 ar = ('Shafii, Maliki, Hambali', 'Hanafi')
@@ -35,8 +33,8 @@ else:
 
     print('\n4. Choose the Fajr and Ishaa reference:\n-------------------------------------')
 
-    for key, val in FAJR_ISHA_METHODS.items():
-        print('{} = {}'.format(key, val))
+    for method in LIST_FAJR_ISHA_METHODS:
+        print('{} = {}'.format(method.id, " | ".join(method.organizations)))
 
     fajr_isha_method = int(input('Enter your choice (from 1 to 5): '))
 
@@ -61,7 +59,8 @@ def tz(t):
 
 
 print('Timezone:\n\t', tz(timezone))
-print('Fajr and Ishaa reference:\n\t', FAJR_ISHA_METHODS[fajr_isha_method])
+print('Fajr and Ishaa reference:\n\t',
+      LIST_FAJR_ISHA_METHODS[fajr_isha_method - 1].organizations[0])
 print('Asr madhab:\n\t', ar[asr_fiqh - 1])
 print('\nPrayer times for: ' + hijri.format(2) + ' '
       + str(hijri.to_gregorian()))
