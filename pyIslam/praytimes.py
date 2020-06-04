@@ -7,6 +7,20 @@ from pyIslam.baselib import dcos, dsin, gregorian_to_julian
 from math import *
 
 
+class FixedTime():
+    def __init__(self, all_year_time_min, ramadan_time_min):
+        self._all_year_time = all_year_time_min
+        self._ramadan_time = ramadan_time_min
+
+    @property
+    def ramadan_time_hr(self):
+        return self._ramadan_time / 60.0
+
+    @property
+    def all_year_time_hr(self):
+        return self._all_year_time / 60.0
+
+
 class MethodInfo:
     def __init__(self, method_id, organizations, fajr_angle, ishaa_angle, applicability=()):
         self._id = method_id
@@ -53,7 +67,7 @@ LIST_FAJR_ISHA_METHODS = (
                19.5, 17.5, ()),
 
     MethodInfo(4, "Umm al-Qura University, Makkah (UMU)",
-               18.5, None, ()),
+               18.5, FixedTime(90, 120), ()),
 
     MethodInfo(5, ("Islamic Society of North America (ISNA)",
                    "France - Angle 15°"),
@@ -68,7 +82,11 @@ LIST_FAJR_ISHA_METHODS = (
                20.0, 18.0, ()),
 
     MethodInfo(8, "Spiritual Administration of Muslims of Russia",
-               16.0, 15.0, ())
+               16.0, 15.0, ()),
+
+    MethodInfo(9, "Fixed Ishaa Time Interval, 90min",
+               19.5, FixedTime(90, 90), ()),
+
 )
 
 
@@ -105,13 +123,14 @@ class PrayerConf:
 
         global LIST_FAJR_ISHA_METHODS
 
-        if angle_ref > len(LIST_FAJR_ISHA_METHODS):
-            angle_ref = 3
+        method = LIST_FAJR_ISHA_METHODS[angle_ref - 1] if angle_ref <= len(
+            LIST_FAJR_ISHA_METHODS) else LIST_FAJR_ISHA_METHODS[2]
 
         # Pythonista way to write switch-case instruction
-        self.fajr_angle = LIST_FAJR_ISHA_METHODS[angle_ref - 1].fajr_angle + 90
-        self.ishaa_angle = LIST_FAJR_ISHA_METHODS[angle_ref -
-                                                  1].ishaa_angle + 90
+        self.fajr_angle = (method.fajr_angle +
+                           90.0) if type(method.fajr_angle) is not FixedTime else method.fajr_angle
+        self.ishaa_angle = (method.ishaa_angle +
+                            90.0) if type(method.ishaa_angle) is not FixedTime else method.ishaa_angle
 
 
 class Prayer:
@@ -192,10 +211,9 @@ class Prayer:
 
     def sherook_time(self, shift=0.0):
         '''Get the Sunrise (Sherook) time'''
-        return (Prayer._hours_to_time
-                (self._dohr_time()
-                 - self._time(self._conf.sherook_angle),
-                 shift, self._conf.summer_time))
+        return Prayer._hours_to_time(self._dohr_time()
+                                     - self._time(self._conf.sherook_angle),
+                                     shift, self._conf.summer_time)
 
     def dohr_time(self, shift=0.0):
         return Prayer._hours_to_time(self._dohr_time(),
@@ -203,29 +221,25 @@ class Prayer:
 
     def asr_time(self, shift=0.0):
         '''Get the Asr time'''
-        return (Prayer._hours_to_time
-                (self._dohr_time() + self._time(self._asr_angle()),
-                 shift, self._conf.summer_time))
+        return Prayer._hours_to_time(self._dohr_time() + self._time(self._asr_angle()),
+                                     shift, self._conf.summer_time)
 
     def maghreb_time(self, shift=0.0):
         '''Get the Maghreb time'''
-        return (Prayer._hours_to_time
-                (self._dohr_time() + self._time
-                 (self._conf.maghreb_angle), shift, self._conf.summer_time))
+        return Prayer._hours_to_time(self._dohr_time() + self._time
+                                     (self._conf.maghreb_angle), shift, self._conf.summer_time)
 
     def ishaa_time(self, shift=0.0):
         '''Get the Ishaa time'''
-        if (self._conf.ishaa_angle is None):
-            # Assumes ishaa_angle==None <=> method == Umm al-Qura University, Makkah
-            if HijriDate.get_hijri(self._date,
-                                   self._correction_val).month == 9:
-                ishaa_t = self._dohr_time()
-                + self._time(self._conf.maghreb_angle) + 2.0
-            else:
-                ishaa_t = self._dohr_time()
-                + self._time(self._conf.maghreb_angle) + 1.5
+        if (type(self._conf.ishaa_angle) is FixedTime):
+            is_ramadan = HijriDate.get_hijri(
+                self._date, self._correction_val).month == 9
+
+            time_after_maghreb = self._conf.ishaa_angle.ramadan_time_hr if is_ramadan else self._conf.ishaa_angle.all_year_time_hr
+
+            ishaa_t = (time_after_maghreb + self._dohr_time() +
+                       self._time(self._conf.maghreb_angle))
         else:
-            ishaa_t = self._time(self._conf.ishaa_angle)
-            ishaa_t = self._dohr_time() + ishaa_t
+            ishaa_t = self._dohr_time() + self._time(self._conf.ishaa_angle)
         return Prayer._hours_to_time(ishaa_t, shift,
                                      self._conf.summer_time)
