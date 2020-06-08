@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from math import pi, atan, sqrt, tan, floor
-from datetime import time
+from datetime import time, datetime
 from pyIslam.hijri import HijriDate
-from pyIslam.baselib import dcos, dsin, gregorian_to_julian
+from pyIslam.baselib import dcos, dsin, equation_of_time, gregorian_to_julian
 from math import *
 
 
@@ -91,15 +91,15 @@ LIST_FAJR_ISHA_METHODS = (
 
 
 class PrayerConf:
-    def __init__(self, longitude, latitude, timezone, angle_ref=3,
+    def __init__(self, longitude, latitude, timezone, angle_ref=2,
                  asr_madhab=1, enable_summer_time=False):
         '''Initialize the PrayerConf object
         @param longitude: geographical longitude of the given location
         @param latitude: geographical latitude of the given location
         @param timezone: the time zone GMT(+/-timezone)
-        @param angle_ref: integer value for the Fajr and Ishaa angle angle reference
+        @param angle_ref: The reference method for Fajr and Ishaa angles, you can pass a MethodInfo object or the ID of the method (for backward compatibility), a list of predefined MethodInfos can be found in LIST_FAJR_ISHA_METHODS, default option for angle_ref is 2
         @param asr_madhab: integer value
-        1 = Shafii, Maliki, Hambali (default)
+        1 = Jomhor (Shafii, Maliki & Hambali) (default option)
         2 = Hanafi
         @param: enable_summer_time: True if summer time is used in the place,
         False (default) if not'''
@@ -111,9 +111,9 @@ class PrayerConf:
         self.maghreb_angle = 90.83333
 
         if asr_madhab == 2:
-            self.asr_madhab = asr_madhab  # 1 = Shafii/Maliki/Hambali, 2 = Hanafi
+            self.asr_madhab = asr_madhab  # 2 = Hanafi
         else:
-            self.asr_madhab = 1
+            self.asr_madhab = 1  # 1 = Jomhor (Shafii, Maliki & Hambali)
 
         self.middle_longitude = self.timezone * 15
         self.longitude_difference = (
@@ -123,10 +123,15 @@ class PrayerConf:
 
         global LIST_FAJR_ISHA_METHODS
 
-        method = LIST_FAJR_ISHA_METHODS[angle_ref - 1] if angle_ref <= len(
-            LIST_FAJR_ISHA_METHODS) else LIST_FAJR_ISHA_METHODS[2]
+        if type(angle_ref) is int:
+            method = LIST_FAJR_ISHA_METHODS[angle_ref - 1] if angle_ref <= len(
+                LIST_FAJR_ISHA_METHODS) else LIST_FAJR_ISHA_METHODS[2]
+        elif type(method) is MethodInfo:
+            method = angle_ref
+        else:
+            raise TypeError(
+                "angle_ref must be an instance form type int or MethodInfo")
 
-        # Pythonista way to write switch-case instruction
         self.fajr_angle = (method.fajr_angle +
                            90.0) if type(method.fajr_angle) is not FixedTime else method.fajr_angle
         self.ishaa_angle = (method.ishaa_angle +
@@ -139,24 +144,28 @@ class Prayer:
     def __init__(self, conf, dat, correction_val=0):
         self._conf = conf
         self._date = dat
+        self._jd = gregorian_to_julian(dat)
 
         if not (correction_val in range(-2, 3)):
             raise Exception('Correction value exception')
         else:
             self._correction_val = correction_val
 
-    def _equation_of_time(self):
-        '''Get equation of time'''
-        n = gregorian_to_julian(self._date) - 2451544.5
-        g = 357.528 + 0.9856003 * n
-        c = 1.9148 * dsin(g) + 0.02 * dsin(2 * g) + 0.0003 * dsin(3 * g)
-        lamda = 280.47 + 0.9856003 * n + c
-        r = (-2.468 * dsin(2 * lamda)
-             + 0.053 * dsin(4 * lamda)
-             + 0.0014 * dsin(6 * lamda))
-        return (c + r) * 4
+        # Dohr time MUST BE calculated at first, every other time depends on it!
+        self._dohr_time = self._get_dohr_time()
 
-    def _asr_angle(self):
+        self._fajr_time = self._get_fajr_time()
+        self._sherook_time = self._get_sherook_time()
+        self._asr_time = self._get_asr_time()
+        self._maghreb_time = self._get_maghreb_time()
+        self._ishaa_time = self._get_ishaa_time()
+
+        # This two BE called after ishaa, since they depends on it
+        self._midnight = self._get_midnight()
+        self._first_third_of_night = self._get_second_third_of_night()
+        self._last_third_of_night = self._get_last_third_of_night()
+
+    def _get_asr_angle(self):
         '''Get the angle angle for asr (according to choosed asr fiqh)'''
         delta = self._sun_declination()
         x = (dsin(self._conf.latitude) * dsin(delta)
@@ -167,7 +176,7 @@ class Prayer:
 
     def _sun_declination(self):
         '''Get sun declination'''
-        n = gregorian_to_julian(self._date) - 2451544.5
+        n = self._jd - 2451544.5
         epsilon = 23.44 - 0.0000004 * n
         l = 280.466 + 0.9856474 * n
         g = 357.528 + 0.9856003 * n
@@ -175,15 +184,7 @@ class Prayer:
         x = dsin(epsilon) * dsin(lamda)
         return (180 / (4 * atan(1))) * atan(x / sqrt(-x * x + 1))
 
-    def _dohr_time(self):
-        '''# Dohr time for internal use, return number of hours,
-        not time object'''
-        ld = self._conf.longitude_difference
-        time_eq = self._equation_of_time()
-        duhr_t = 12 + ld + time_eq / 60
-        return duhr_t
-
-    def _time(self, angle):
+    def _get_time_for_angle(self, angle):
         '''Get Times for "Fajr, Sherook, Asr, Maghreb, ishaa"'''
         delta = self._sun_declination()
         s = ((dcos(angle)
@@ -191,55 +192,125 @@ class Prayer:
              / (dcos(self._conf.latitude) * dcos(delta)))
         return (180 / pi * (atan(-s / sqrt(-s * s + 1)) + pi / 2)) / 15
 
-    def _hours_to_time(val, shift, summer_time):
-        '''Convert a decimal value (in hours) to time object'''
+    def _hours_to_time(self, val, shift):
+        '''
+        Convert a decimal value (in hours) to time object,
+        @param val: hours value
+        @param shift: time shift (in seconds) from the actual `val` time, used to add or subtract time from the prayer time
+        @param summer_time: True id summer time is used, False else
+        '''
         if not (isinstance(shift, float) or isinstance(shift, int)):
-            raise Exception("'shift' value must be an 'int' or 'float'")
+            raise ValueError("shift's value must be an int or a float")
 
-        st = 1 if summer_time else 0
+        st = 1 if self._conf.summer_time else 0
 
-        hours = val + shift/3600
+        hours = val + shift / 3600
         minutes = (hours - floor(hours)) * 60
         seconds = (minutes - floor(minutes)) * 60
-        return time((floor(hours) + st), floor(minutes), floor(seconds))
+
+        hours = floor(hours + st) % 24
+
+        return time(hours, floor(minutes), floor(seconds))
 
     def fajr_time(self, shift=0.0):
-        '''Get the Fajr time'''
-        return (Prayer._hours_to_time
-                (self._dohr_time() - self._time(self._conf.fajr_angle),
-                 shift, self._conf.summer_time))
+        '''
+        Get the Fajr time
+        @param shift: time shift (in seconds) from the actual `val` time, used to add or subtract time from the prayer time
+        '''
+        return self._hours_to_time(self._fajr_time, shift)
+
+    def _get_fajr_time(self):
+        return self._dohr_time - self._get_time_for_angle(self._conf.fajr_angle)
 
     def sherook_time(self, shift=0.0):
-        '''Get the Sunrise (Sherook) time'''
-        return Prayer._hours_to_time(self._dohr_time()
-                                     - self._time(self._conf.sherook_angle),
-                                     shift, self._conf.summer_time)
+        '''
+        Get the Sunrise (Sherook) time
+        @param shift: time shift (in seconds) from the actual `val` time, used to add or subtract time from the prayer time
+        '''
+        return self._hours_to_time(self._sherook_time, shift)
+
+    def _get_sherook_time(self):
+        return self._dohr_time - self._get_time_for_angle(self._conf.sherook_angle)
 
     def dohr_time(self, shift=0.0):
-        return Prayer._hours_to_time(self._dohr_time(),
-                                     shift, self._conf.summer_time)
+        '''
+        Get the Dohr (Zenith) time
+        @param shift: time shift (in seconds) from the actual `val` time, used to add or subtract time from the prayer time
+        '''
+        return self._hours_to_time(self._dohr_time, shift)
+
+    def _get_dohr_time(self):
+        '''
+        # Dohr time for internal use, return number of hours, not time object
+        '''
+        ld = self._conf.longitude_difference
+        time_eq = equation_of_time(self._jd)
+        duhr_t = 12 + ld + time_eq / 60
+        return duhr_t
 
     def asr_time(self, shift=0.0):
-        '''Get the Asr time'''
-        return Prayer._hours_to_time(self._dohr_time() + self._time(self._asr_angle()),
-                                     shift, self._conf.summer_time)
+        '''
+        Get the Asr time
+        @param shift: time shift (in seconds) from the actual `val` time, used to add or subtract time from the prayer time
+        '''
+        return self._hours_to_time(self._asr_time, shift)
+
+    def _get_asr_time(self):
+        return self._dohr_time + self._get_time_for_angle(self._get_asr_angle())
 
     def maghreb_time(self, shift=0.0):
-        '''Get the Maghreb time'''
-        return Prayer._hours_to_time(self._dohr_time() + self._time
-                                     (self._conf.maghreb_angle), shift, self._conf.summer_time)
+        '''
+        Get the Maghreb time
+        @param shift: time shift (in seconds) from the actual `val` time, used to add or subtract time from the prayer time
+        '''
+        return self._hours_to_time(self._maghreb_time, shift)
+
+    def _get_maghreb_time(self):
+        return self._dohr_time + self._get_time_for_angle(self._conf.maghreb_angle)
 
     def ishaa_time(self, shift=0.0):
-        '''Get the Ishaa time'''
+        '''
+        Get the Ishaa time
+        @param shift: time shift (in seconds) from the actual `val` time, used to add or subtract time from the prayer time
+        '''
+        return self._hours_to_time(self._ishaa_time, shift)
+
+    def _get_ishaa_time(self):
         if (type(self._conf.ishaa_angle) is FixedTime):
             is_ramadan = HijriDate.get_hijri(
                 self._date, self._correction_val).month == 9
 
             time_after_maghreb = self._conf.ishaa_angle.ramadan_time_hr if is_ramadan else self._conf.ishaa_angle.all_year_time_hr
 
-            ishaa_t = (time_after_maghreb + self._dohr_time() +
-                       self._time(self._conf.maghreb_angle))
+            ishaa_t = (time_after_maghreb + self._dohr_time +
+                       self._get_time_for_angle(self._conf.maghreb_angle))
         else:
-            ishaa_t = self._dohr_time() + self._time(self._conf.ishaa_angle)
-        return Prayer._hours_to_time(ishaa_t, shift,
-                                     self._conf.summer_time)
+            ishaa_t = self._dohr_time + \
+                self._get_time_for_angle(self._conf.ishaa_angle)
+        return ishaa_t
+
+    def midnight(self, shift=0.0):
+        '''
+        Midnight is the exact time between sunrise (Shorook) and sunset (Maghreb),
+        It defines usually the end of Ishaa time
+        '''
+        return self._hours_to_time(self._midnight, shift)
+
+    def _get_midnight(self):
+        return self._maghreb_time + ((24.0 - (self._maghreb_time - self._fajr_time)) / 2.0)
+
+    def second_third_of_night(self, shift=0.0):
+        return self._hours_to_time(self._first_third_of_night, shift)
+
+    def _get_second_third_of_night(self):
+        return self._maghreb_time + ((24.0 - (self._maghreb_time - self._fajr_time)) / 3.0)
+
+    def last_third_of_night(self, shift=0.0):
+        '''
+        Qiyam time starts after Ishaa directly, however, the best time for Qiyam is the last third of night
+        '''
+        return self._hours_to_time(self._last_third_of_night, shift)
+
+    def _get_last_third_of_night(self):
+        # The last third of night,
+        return self._maghreb_time + (2 * (24.0 - (self._maghreb_time - self._fajr_time)) / 3.0)
