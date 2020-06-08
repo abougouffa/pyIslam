@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
+# SOME REFERENCES FOR USED ALGORITHMS (for more info see docs/References.md)
+# [3]: Meeus, Jean, Astronomical Algorithms, ISBN:0-943396-35-2
+
+
 from math import cos, sin, pi, ceil, floor
-from datetime import date
+from datetime import date, datetime
 
 
 # Trigonometric functions takes values in degree
@@ -13,6 +17,20 @@ def dsin(deg):
     return sin((deg * pi) / 180)
 
 # Hijri date calculation methods
+
+
+def equation_of_time(jd):
+    '''Get equation of time'''
+    n = jd - 2451544.5
+    g = 357.528 + 0.9856003 * n
+    c = 1.9148 * dsin(g) + 0.02 * dsin(2 * g) + 0.0003 * dsin(3 * g)
+    lamda = 280.47 + 0.9856003 * n + c
+    r = (-2.468 * dsin(2 * lamda)
+         + 0.053 * dsin(4 * lamda)
+         + 0.0014 * dsin(6 * lamda))
+    return (c + r) * 4
+
+
 def hijri_to_julian(dat):
     return (floor((11 * dat.year + 3) / 30)
             + floor(354 * dat.year)
@@ -21,28 +39,43 @@ def hijri_to_julian(dat):
             + dat.day + 1948440 - 385)
 
 
-def gregorian_to_julian(dat):  # Julian Day
+def gregorian_to_julian(dat):
+    '''
+    The Julian Day (JD) is a continuous count of days and fractions from the beginning of the year -4712,
+    I begins at Greenwich mean noon (12h Universal Time)
+    '''
+
     if dat is None:
-        dat = date.today()
+        dat = datetime.now()
 
-    day = dat.day
-    month = dat.month
-    year = dat.year
+    day, month, year = dat.day, dat.month, dat.year
 
-    if month == 1 or month == 2:
+    # This method works also for fractions of a day, however, the `date` type doesn't
+    # support the fractions in the day, an alternative is to pass the datetime and the
+    # time will be converted to a fraction of a day
+    if type(dat) is date:
+        pass
+    elif type(dat) is datetime:
+        day += (dat.hour + (dat.minute + (dat.second / 60)) / 60.0) / 24.0
+
+    if month <= 2:
         month = month + 12
         year = year - 1
 
     a = floor(year / 100)
-    b = 0
 
-    if year > 1582 or (year == 1582 and (month > 10 or (month == 10 and day > 15))):
-        # If it is a gregorian calendar set b
-        b = 2 - a + floor(a / 4)
+    # In this method, the Gregorian calendar reform is taken into account, the day
+    # following 04 Oct. 1582 (Julian calendar) is 15 Oct. 1582 (Gregorian calendar)
+    # for more information see [3, p60]
 
-    return ceil(floor(365.25 * (year + 4716))
-            + floor(30.6001 * (month + 1))
-            + day + b - 1524.5)
+    b = 2 - a + floor(a / 4) if year > 1582 or (year ==
+                                                1582 and (month > 10 or (month == 10 and day > 15))) else 0
+
+    # The corresponding Julian Day is:
+    jd = floor(365.25 * (year + 4716)) + \
+        floor(30.60  # In Python3, 30.6 gives a right result, no need to use 30.6001 as described in [3, p61]
+              * (month + 1)) + day + b - 1524.5
+    return jd
 
 
 def julian_to_hijri(julian_day, correction_val=0):
@@ -60,6 +93,7 @@ def julian_to_hijri(julian_day, correction_val=0):
 
 
 def julian_to_gregorian(jd):
+    jd = jd + 5
     z = floor(jd)
     f = jd - z
 
@@ -72,22 +106,15 @@ def julian_to_gregorian(jd):
     b = a + 1524
     c = floor((b - 122.1) / 365.25)
     d = floor(365.25 * c)
-    e = floor((b - d) / 30.6001)
+    e = floor((b - d) / 30.6001)  # The 30.6001 SHOULD NOT BE REPLACED by 30.6
 
     # Calculate the day
     day = b - d - floor(30.6001 * e) + f
 
     # Calculate the month
-    if e < 14:
-        month = e - 1
-    elif e == 14 or e == 15:
-        month = e - 13
+    month = e - (1 if e < 14 else 13)
 
     # Calculate the year
-    if month > 2:
-        year = c - 4716
-
-    elif month == 1 or month == 2:
-        year = c - 4715
+    year = c - (4716 if month > 2 else 4715)
 
     return (year, month, day)
