@@ -76,7 +76,7 @@ class Mirath():
 	#   for i in range(len(self.result_list)):
 	#       self._append_to_log(str(self.relative_list[i]) + ' -> ' + str(self.result_list[i]))
 	
-	def calculte_mirath(self):
+	def calculate_mirath(self):
 		females = ['son', 'grandson']
 		males = ['son', 'grandson', 'father', 'grandfather', 'paternal_brother', 'maternal_brother', 'brother', 'uncle', 'cousin', 'paternal_uncle', 'paternal_cousin']
 
@@ -487,7 +487,7 @@ def test_mirath_cases():
 	case.add_relative('wife')
 	case.add_relative('mother')
 	case.add_relative('son')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 24), Fraction(4, 24), Fraction(17, 24)]
 	check_results(case, true_result)
@@ -497,7 +497,7 @@ def test_mirath_cases():
 	case = Mirath("case 2")
 	case.add_relative('husband')
 	case.add_relative('sister', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 7), Fraction(4, 7)]
 	check_results(case, true_result)
@@ -508,7 +508,7 @@ def test_mirath_cases():
 	case.add_relative('husband')
 	case.add_relative('mother')
 	case.add_relative('father')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 6), Fraction(1, 6), Fraction(2, 6)]
 	check_results(case, true_result)
@@ -519,7 +519,7 @@ def test_mirath_cases():
 	case.add_relative('wife')
 	case.add_relative('mother')
 	case.add_relative('father')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(1, 4), Fraction(1, 4), Fraction(2, 4)]
 	check_results(case, true_result)
@@ -531,7 +531,7 @@ def test_mirath_cases():
 	case.add_relative('mother')
 	case.add_relative('maternal_brother', 2)
 	case.add_relative('paternal_brother', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(6, 12), Fraction(2, 12), Fraction(2, 12), Fraction(2, 12)]
 	check_results(case, true_result)
@@ -541,7 +541,7 @@ def test_mirath_cases():
 	case = Mirath("case 6")
 	case.add_relative('mother')
 	case.add_relative('sister')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(2, 5), Fraction(3, 5)]
 	check_results(case, true_result)
@@ -552,7 +552,7 @@ def test_mirath_cases():
 	case.add_relative('maternal_grandmother')
 	case.add_relative('sister')
 	case.add_relative('maternal_brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(1, 5), Fraction(3, 5), Fraction(1, 5)]
 	check_results(case, true_result)
@@ -562,7 +562,7 @@ def test_mirath_cases():
 	case = Mirath("case 8")
 	case.add_relative('daughter')
 	case.add_relative('granddaughter', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(6, 8), Fraction(2, 8)]
 	check_results(case, true_result)
@@ -572,7 +572,7 @@ def test_mirath_cases():
 	case = Mirath("case 9")
 	case.add_relative('mother')
 	case.add_relative('maternal_brother', 3)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 9), Fraction(6, 9)]
 	check_results(case, true_result)
@@ -582,7 +582,7 @@ def test_mirath_cases():
 	case = Mirath("case 10")
 	case.add_relative('wife')
 	case.add_relative('sister', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(2, 8), Fraction(6, 8)]
 	check_results(case, true_result)
@@ -593,7 +593,7 @@ def test_mirath_cases():
 	case.add_relative('wife')
 	case.add_relative('daughter')
 	case.add_relative('mother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(4, 32), Fraction(21, 32), Fraction(7, 32)]
 	check_results(case, true_result)
@@ -604,7 +604,7 @@ def test_mirath_cases():
 	case.add_relative('wife')
 	case.add_relative('mother')
 	case.add_relative('maternal_brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(1, 4), Fraction(2, 4), Fraction(1, 4)]
 	check_results(case, true_result)
@@ -616,7 +616,7 @@ def test_mirath_cases():
 	case.add_relative('maternal_brother', 2)
 	case.add_relative('paternal_grandmother')
 	case.add_relative('maternal_grandmother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(2, 8), Fraction(4, 8), Fraction(1, 8), Fraction(1, 8)]
 	check_results(case, true_result)
@@ -628,7 +628,7 @@ def test_mirath_cases():
 	case.add_relative('daughter')
 	case.add_relative('mother')
 	case.add_relative('brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 24), Fraction(12, 24), Fraction(4, 24), Fraction(5, 24)]
 	check_results(case, true_result)
@@ -639,7 +639,7 @@ def test_mirath_cases():
 	case.add_relative('paternal_maternal_uncle')
 	case.add_relative('sister', 2)
 	case.add_relative('maternal_sister', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(1, 7), Fraction(4, 7), Fraction(2, 7)]
 	check_results(case, true_result)
@@ -653,7 +653,7 @@ def test_mirath_cases():
 	case.add_relative('mother')
 	case.add_relative('daughter')
 	case.add_relative('paternal_uncle')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 24), Fraction(4, 24), Fraction(12, 24), Fraction(5, 24)]
 	check_results(case, true_result)
@@ -665,7 +665,7 @@ def test_mirath_cases():
 	case.add_relative('daughter')
 	case.add_relative('brother')
 	case.add_relative('paternal_uncle')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 24), Fraction(12, 24), Fraction(9, 24), Fraction(0, 24)]
 	check_results(case, true_result)
@@ -677,7 +677,7 @@ def test_mirath_cases():
 	case.add_relative('brother', 2)
 	case.add_relative('sister')
 	case.add_relative('paternal_uncle')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(5, 20), Fraction(12, 20), Fraction(3, 20), Fraction(0, 24)]
 	check_results(case, true_result)
@@ -688,7 +688,7 @@ def test_mirath_cases():
 	case.add_relative('daughter')
 	case.add_relative('granddaughter')
 	case.add_relative('sister', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(6, 12), Fraction(2, 12), Fraction(4, 12)]
 	check_results(case, true_result)
@@ -700,7 +700,7 @@ def test_mirath_cases():
 	case.add_relative('daughter')
 	case.add_relative('father')
 	case.add_relative('brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(1, 8), Fraction(4, 8), Fraction(3, 8), Fraction(0, 8)]
 	check_results(case, true_result)
@@ -711,7 +711,7 @@ def test_mirath_cases():
 	case.add_relative('husband')
 	case.add_relative('daughter')
 	case.add_relative('father')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(2, 8), Fraction(4, 8), Fraction(2, 8)]
 	check_results(case, true_result)
@@ -723,7 +723,7 @@ def test_mirath_cases():
 	case.add_relative('mother')
 	case.add_relative('daughter')
 	case.add_relative('sister')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 12), Fraction(2, 12), Fraction(6, 12), Fraction(1, 12)]
 	check_results(case, true_result)
@@ -734,7 +734,7 @@ def test_mirath_cases():
 	case.add_relative('husband')
 	case.add_relative('granddaughter')
 	case.add_relative('cousin')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(1, 4), Fraction(2, 4), Fraction(1, 4)]
 	check_results(case, true_result)
@@ -752,7 +752,7 @@ def test_mirath_cases():
 
 	case = Mirath("case 27")
 	case.add_relative('son', 3)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(1, 1)]
 	check_results(case, true_result)
@@ -763,7 +763,7 @@ def test_mirath_cases():
 	case.add_relative('wife')
 	case.add_relative('son')
 	case.add_relative('daughter')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 24), Fraction(14, 24), Fraction(7, 24)]
 	check_results(case, true_result)
@@ -773,7 +773,7 @@ def test_mirath_cases():
 	case = Mirath("case 29")
 	case.add_relative('son')
 	case.add_relative('daughter', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(2, 4), Fraction(2, 4)]
 	check_results(case, true_result)
@@ -784,7 +784,7 @@ def test_mirath_cases():
 	case.add_relative('husband')
 	case.add_relative('son')
 	case.add_relative('daughter')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(1, 4), Fraction(2, 4), Fraction(1, 4)]
 	check_results(case, true_result)
@@ -794,7 +794,7 @@ def test_mirath_cases():
 	case = Mirath("case 31")
 	case.add_relative('brother', 2)
 	case.add_relative('sister')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(4, 5), Fraction(1, 5)]
 	check_results(case, true_result)
@@ -805,7 +805,7 @@ def test_mirath_cases():
 	case.add_relative('mother')
 	case.add_relative('maternal_brother')
 	case.add_relative('brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(1, 6), Fraction(1, 6), Fraction(4, 6)]
 	check_results(case, true_result)
@@ -816,7 +816,7 @@ def test_mirath_cases():
 	case.add_relative('mother')
 	case.add_relative('daughter')
 	case.add_relative('paternal_brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(1, 6), Fraction(3, 6), Fraction(2, 6)]
 	check_results(case, true_result)
@@ -827,7 +827,7 @@ def test_mirath_cases():
 	case.add_relative('husband')
 	case.add_relative('mother')
 	case.add_relative('brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 6), Fraction(2, 6), Fraction(1, 6)]
 	check_results(case, true_result)
@@ -838,7 +838,7 @@ def test_mirath_cases():
 	case.add_relative('wife')
 	case.add_relative('daughter')
 	case.add_relative('paternal_brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(1, 8), Fraction(4, 8), Fraction(3, 8)]
 	check_results(case, true_result)
@@ -851,7 +851,7 @@ def test_mirath_cases():
 	case.add_relative('daughter')
 	case.add_relative('granddaughter')
 	case.add_relative('brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 24), Fraction(4, 24), Fraction(12, 24), Fraction(4, 24), Fraction(1, 24)]
 	check_results(case, true_result)
@@ -862,7 +862,7 @@ def test_mirath_cases():
 	case.add_relative('wife')
 	case.add_relative('mother')
 	case.add_relative('son')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 24), Fraction(4, 24), Fraction(17, 24)]
 	check_results(case, true_result)
@@ -873,7 +873,7 @@ def test_mirath_cases():
 	case.add_relative('wife')
 	case.add_relative('daughter', 3)
 	case.add_relative('brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(9, 72), Fraction(48, 72), Fraction(15, 72)]
 	check_results(case, true_result)
@@ -883,7 +883,7 @@ def test_mirath_cases():
 	case = Mirath("case 39")
 	case.add_relative('husband')
 	case.add_relative('sister')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(1, 2), Fraction(1, 2)]
 	check_results(case, true_result)
@@ -895,7 +895,7 @@ def test_mirath_cases():
 	case.add_relative('mother')
 	case.add_relative('daughter')
 	case.add_relative('brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 24), Fraction(4, 24), Fraction(12, 24), Fraction(5, 24)]
 	check_results(case, true_result)
@@ -907,7 +907,7 @@ def test_mirath_cases():
 	case.add_relative('father')
 	case.add_relative('son')
 	case.add_relative('paternal_nephew')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 24), Fraction(4, 24), Fraction(17, 24), Fraction(0, 24)]
 	check_results(case, true_result)
@@ -919,7 +919,7 @@ def test_mirath_cases():
 	case.add_relative('daughter', 3)
 	case.add_relative('maternal_grandmother')
 	case.add_relative('brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(9, 72), Fraction(48, 72), Fraction(12, 72), Fraction(3, 72)]
 	check_results(case, true_result)
@@ -930,7 +930,7 @@ def test_mirath_cases():
 	case.add_relative('wife', 2)
 	case.add_relative('brother')
 	case.add_relative('sister', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(4, 16), Fraction(6, 16), Fraction(6, 16)]
 	check_results(case, true_result)
@@ -941,7 +941,7 @@ def test_mirath_cases():
 	case.add_relative('wife', 2)
 	case.add_relative('brother')
 	case.add_relative('sister', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(4, 16), Fraction(6, 16), Fraction(6, 16)]
 	check_results(case, true_result)
@@ -951,7 +951,7 @@ def test_mirath_cases():
 	case = Mirath("case 45")
 	case.add_relative('daughter', 3)
 	case.add_relative('paternal_uncle')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(6, 9), Fraction(3, 9)]
 	check_results(case, true_result)
@@ -961,7 +961,7 @@ def test_mirath_cases():
 	case = Mirath("case 46")
 	case.add_relative('daughter', 3)
 	case.add_relative('sister', 3)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(6, 9), Fraction(3, 9)]
 	check_results(case, true_result)
@@ -972,7 +972,7 @@ def test_mirath_cases():
 	case.add_relative('wife', 2)
 	case.add_relative('sister', 3)
 	case.add_relative('paternal_brother', 3)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(18, 72), Fraction(48, 72), Fraction(6, 72)]
 	check_results(case, true_result)
@@ -984,7 +984,7 @@ def test_mirath_cases():
 	case.add_relative('daughter')
 	case.add_relative('granddaughter')
 	case.add_relative('paternal_sister', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(2, 12), Fraction(6, 12), Fraction(2, 12), Fraction(2, 12)]
 	check_results(case, true_result)
@@ -996,7 +996,7 @@ def test_mirath_cases():
 	case.add_relative('maternal_grandmother', 3)
 	case.add_relative('maternal_brother', 3)
 	case.add_relative('paternal_uncle', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(18, 72), Fraction(12, 72), Fraction(24, 72), Fraction(18, 72)]
 	check_results(case, true_result)
@@ -1011,7 +1011,7 @@ def test_mirath_cases():
 	case.add_relative('daughter', 3)
 	case.add_relative('grandfather')
 	case.add_relative('brother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(21, 84), Fraction(14, 84), Fraction(14, 84), Fraction(20, 84), Fraction(15, 84), Fraction(0, 84), Fraction(0, 84)]
 	check_results(case, true_result)
@@ -1024,7 +1024,7 @@ def test_mirath_cases():
 	case.add_relative('paternal_sister')
 	case.add_relative('mother')
 	case.add_relative('maternal_sister', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 
 	true_result = [Fraction(3, 10), Fraction(3, 10), Fraction(1, 10), Fraction(1, 10), Fraction(2, 10)]
@@ -1036,7 +1036,7 @@ def test_mirath_cases():
 	case.add_relative('husband')
 	case.add_relative('paternal_sister', 2)
 	case.add_relative('maternal_brother', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 9), Fraction(4, 9), Fraction(2, 9)]
 	check_results(case, true_result)
@@ -1047,7 +1047,7 @@ def test_mirath_cases():
 	case.add_relative('husband')
 	case.add_relative('sister')
 	case.add_relative('paternal_grandmother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 7), Fraction(3, 7), Fraction(1, 7)]
 	check_results(case, true_result)
@@ -1058,7 +1058,7 @@ def test_mirath_cases():
 	case.add_relative('wife')
 	case.add_relative('paternal_sister', 2)
 	case.add_relative('mother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 13), Fraction(8, 13), Fraction(2, 13)]
 	check_results(case, true_result)
@@ -1070,7 +1070,7 @@ def test_mirath_cases():
 	case.add_relative('paternal_sister', 2)
 	case.add_relative('maternal_brother', 2)
 	case.add_relative('mother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 17), Fraction(8, 17), Fraction(4, 17), Fraction(2, 17)]
 	check_results(case, true_result)
@@ -1081,7 +1081,7 @@ def test_mirath_cases():
 	case.add_relative('wife')
 	case.add_relative('sister', 2)
 	case.add_relative('maternal_brother', 2)
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 15), Fraction(8, 15), Fraction(4, 15)]
 	check_results(case, true_result)
@@ -1092,7 +1092,7 @@ def test_mirath_cases():
 	case.add_relative('husband')
 	case.add_relative('sister', 2)
 	case.add_relative('paternal_grandmother')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 8), Fraction(4, 8), Fraction(1, 8)]
 	check_results(case, true_result)
@@ -1104,7 +1104,7 @@ def test_mirath_cases():
 	case.add_relative('daughter', 2)
 	case.add_relative('mother')
 	case.add_relative('father')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(3, 27), Fraction(16, 27), Fraction(4, 27), Fraction(4, 27)]
 	check_results(case, true_result)
@@ -1118,7 +1118,7 @@ def test_mirath_cases():
 	case.add_relative('wife')
 	case.add_relative('brother', 12)
 	case.add_relative('sister')
-	case.calculte_mirath()
+	case.calculate_mirath()
 
 	true_result = [Fraction(400, 600), Fraction(100, 600), Fraction(75, 600), Fraction(24, 600), Fraction(1, 600)]
 	check_results(case, true_result)

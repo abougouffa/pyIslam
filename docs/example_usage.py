@@ -21,9 +21,9 @@ ar = ('Shafii, Maliki, Hambali', 'Hanafi')
 longitude = input('1. Enter the longitude of your city: ')
 
 if longitude == '':
-    print('\nUsing the default values: Country = France, State = Algiers')
-    longitude = 0.1123912
-    latitude = 45.6186566
+    print('\nUsing the default values: Country = France, State = Angouleme')
+    longitude = 0.1099341
+    latitude = 45.6458156
     timezone = 2
     fajr_isha_method = 6
     asr_fiqh = 1
@@ -109,5 +109,5 @@ test.add_relative('sister')
 test.add_relative('brother')
 test.add_relative('maternal_brother', 3)
 test.add_relative('son')
-test.calculte_mirath()
+test.calculate_mirath()
 # test.display_shares()
