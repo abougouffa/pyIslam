@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from pyIslam.praytimes import PrayerConf, Prayer, LIST_FAJR_ISHA_METHODS
+from pyIslam.praytimes import PrayerConf, Prayer, LIST_FAJR_ISHA_METHODS, MethodInfo, FixedTime
 from pyIslam.hijri import HijriDate
 from pyIslam.qiblah import Qiblah
 from datetime import date, datetime
@@ -38,6 +38,11 @@ else:
         print('{} = {}'.format(method.id, " | ".join(method.organizations)))
 
     fajr_isha_method = int(input('Enter your choice (from 1 to 5): '))
+
+    # Now you can also define a custom method, based on angle
+    # fajr_isha_method = MethodInfo(9, "Custom", 16.5, 16.5)
+    # Or fixed time (usually for Ishaa)
+    # fajr_isha_method = MethodInfo(9, "Custom", 16.5, FixedTime(90)) # Adds 90 minutes after Maghreb
 
     print('\n5. Choose the Asr Madhab:\n-------------------------------------')
     print('1 = {}\n2 = {}'.format(ar[0], ar[1]))
