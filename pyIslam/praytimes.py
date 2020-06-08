@@ -110,10 +110,8 @@ class PrayerConf:
         self.sherook_angle = 90.83333  # Constants
         self.maghreb_angle = 90.83333
 
-        if asr_madhab == 2:
-            self.asr_madhab = asr_madhab  # 2 = Hanafi
-        else:
-            self.asr_madhab = 1  # 1 = Jomhor (Shafii, Maliki & Hambali)
+        # 1 = Jomhor (Shafii, Maliki & Hambali), 2 = Hanafi
+        self.asr_madhab = asr_madhab if asr_madhab == 2 else 1
 
         self.middle_longitude = self.timezone * 15
         self.longitude_difference = (
@@ -124,8 +122,8 @@ class PrayerConf:
         global LIST_FAJR_ISHA_METHODS
 
         if type(angle_ref) is int:
-            method = LIST_FAJR_ISHA_METHODS[angle_ref - 1] if angle_ref <= len(
-                LIST_FAJR_ISHA_METHODS) else LIST_FAJR_ISHA_METHODS[2]
+            method = LIST_FAJR_ISHA_METHODS[angle_ref -
+                                            1 if angle_ref <= len(LIST_FAJR_ISHA_METHODS) else 2]
         elif type(method) is MethodInfo:
             method = angle_ref
         else:
@@ -160,9 +158,9 @@ class Prayer:
         self._maghreb_time = self._get_maghreb_time()
         self._ishaa_time = self._get_ishaa_time()
 
-        # This two BE called after ishaa, since they depends on it
+        # These HAVE TO BE called AFTER Ishaa, since they depends on it
         self._midnight = self._get_midnight()
-        self._first_third_of_night = self._get_second_third_of_night()
+        self._second_third_of_night = self._get_second_third_of_night()
         self._last_third_of_night = self._get_last_third_of_night()
 
     def _get_asr_angle(self):
@@ -300,7 +298,7 @@ class Prayer:
         return self._maghreb_time + ((24.0 - (self._maghreb_time - self._fajr_time)) / 2.0)
 
     def second_third_of_night(self, shift=0.0):
-        return self._hours_to_time(self._first_third_of_night, shift)
+        return self._hours_to_time(self._second_third_of_night, shift)
 
     def _get_second_third_of_night(self):
         return self._maghreb_time + ((24.0 - (self._maghreb_time - self._fajr_time)) / 3.0)
