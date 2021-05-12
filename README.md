@@ -29,6 +29,10 @@ pip install islam
 - Monsef Alahem [@monsef-alahem](https://github.com/monsef-alahem)
 - Azzam S. A. [@azzamsa](https://github.com/azzamsa)
 
+# Ports
+## Rust
+- **pyIslam** has been ported to Rust by Azzam S. A. [@azzamsa](https://git.sr.ht/~azzamsa/islam), Rust version available at [git.sr.ht/~azzamsa/islam](https://git.sr.ht/~azzamsa/islam), it features Prayer Times and Hijri calendar.
+
 ------
 **_pyIslam_**
 
