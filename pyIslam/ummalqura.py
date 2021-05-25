@@ -1,5 +1,5 @@
 import math
-from .ummalqura_tables import *
+from .ummalqura_table import *
 
 
 # def gmod(n, m):
