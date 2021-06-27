@@ -1,6 +1,7 @@
 import math
 from .ummalqura_table import *
 
+# Ported form https://webspace.science.uu.nl/~gent0113/islam/addfiles/ummalqura_calendar.js
 
 # def gmod(n, m):
 #     #  generalized  modulo  function  (n  mod  m)  also  valid  for  negative  values  of  n
