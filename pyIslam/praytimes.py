@@ -55,7 +55,7 @@ class MethodInfo:
 LIST_FAJR_ISHA_METHODS = (
     MethodInfo(1, ("University of Islamic Sciences, Karachi (UISK)",
                    "Ministry of Religious Affaires, Tunisia",
-                   "France - Angle 18°"),
+                   "Grande Mosquée de Paris, France"),
                18.0, 18.0, ()),
 
     MethodInfo(2, ("Muslim World League (MWL)",
