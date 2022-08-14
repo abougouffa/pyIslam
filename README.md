@@ -4,7 +4,7 @@ pyIslam
 
 **_pyIslam_** is a python islamic library, it can calculates **prayer times**, **qibla** direction, convert between gregorian and **hijri**, calculate **zakat** and **mirath**.
 
-Actually, the library can does:
+Actually, this is what the library can do:
 
 - [x] Pray times calculation
 - [x] Hijri/Gregorian date conversion
