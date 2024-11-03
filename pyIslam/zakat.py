@@ -11,13 +11,13 @@ O=============================================================================O
 '''
 class Zakat():
     def calculate_zakat(self, amount, nisab=4000) :
-        #minimal amount is 4000 dollars approximatively this days
+        # minimal amount is 4000 dollars approximatively this days
         if amount < nisab: # ( < or <= ?! )
             return 0
         return amount * 0.025 # (4th of 10th)   
 
     def calculate_zakat_harvest(self, weight, irrigationType='artificial', method='hanafi') :
-        #minimal weight in kilogramme
+        # minimal weight in kilogramme
         nisab = 975 if method == 'hanafi' else 612
 
         if weight <= nisab:
