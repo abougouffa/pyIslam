@@ -121,10 +121,10 @@ class PrayerConf:
 
         global LIST_FAJR_ISHA_METHODS
 
-        if type(angle_ref) is int:
+        if isinstance(angle_ref, int):
             method = LIST_FAJR_ISHA_METHODS[angle_ref -
                                             1 if angle_ref <= len(LIST_FAJR_ISHA_METHODS) else 2]
-        elif type(method) is MethodInfo:
+        elif isinstance(angle_ref, MethodInfo):
             method = angle_ref
         else:
             raise TypeError(
