@@ -31,7 +31,7 @@ pip install islam
 
 # Ports
 ## Rust
-- **pyIslam** has been ported to Rust by Azzam S. A. [@azzamsa](https://github.com/azzamsa), Rust version available at [github.com/azzamsa/islam](https://github.com/azzamsa/islam), it features Prayer Times and Hijri calendar.
+- **pyIslam** has been ported to Rust by Azzam S. A. [@azzamsa](https://github.com/azzamsa), Rust version available at [github.com/azzamsa/misykat](https://github.com/azzamsa/misykat), it features Prayer Times and Hijri calendar.
 
 ------
 **_pyIslam_**
